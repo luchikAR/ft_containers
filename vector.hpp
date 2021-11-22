@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <typeinfo>
+#include <iostream>
 
 namespace ft {
 template<class T, class Alloc = std::allocator<T> >
@@ -10,25 +11,24 @@ class vector
 {
 private:
     typedef std::__vector_base<T, Alloc>           	__base;
-    typedef std::allocator<T>                       __default_allocator_type;
 public:
     // typedef vector                                   __self;
-    typedef T                                     	 value_type;
-    typedef Alloc		                             allocator_type;
-    typedef std::allocator_traits<allocator_type>    __alloc_traits;
-    typedef value_type&                              reference;
-    typedef const value_type&                        const_reference;
-    typedef typename __alloc_traits::size_type       size_type;
-    typedef typename __alloc_traits::difference_type difference_type;
-    typedef typename __alloc_traits::pointer         pointer;
-    typedef typename __alloc_traits::const_pointer   const_pointer;
-    typedef pointer                                  iterator;
-    typedef const_pointer                            const_iterator;
-    typedef _VSTD::reverse_iterator<iterator>        reverse_iterator;
-    typedef _VSTD::reverse_iterator<const_iterator>  const_reverse_iterator;
+    typedef T                                     	value_type;
+    typedef Alloc		                           	allocator_type;
+    typedef std::allocator<allocator_type>    		__alloc;
+    typedef value_type&                            	reference;
+    typedef const value_type&                      	const_reference;
+    typedef typename __alloc::size_type       		size_type;
+    typedef typename __alloc::difference_type 		difference_type;
+    typedef typename __alloc::pointer         		pointer;
+    typedef typename __alloc::const_pointer   		const_pointer;
+    typedef pointer                                	iterator;
+    typedef const_pointer                          	const_iterator;
+    typedef _VSTD::reverse_iterator<iterator>      	reverse_iterator;
+    typedef _VSTD::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 private:
-    T*      _array;
+    T*		_array;
     size_t  size_use;
     size_t  capacity;
     Alloc   alloc;
@@ -36,60 +36,84 @@ private:
     pointer                                         __begin_;
     pointer                                         __end_;
     // __compressed_pair<pointer, allocator_type> 		__end_cap_;
+private:
+	template <class InputIterator>
+	void	my_constructor_helper(InputIterator first, InputIterator last)
+	{
+		size_t lenght = last - first;
+		this->capacity = lenght * 2;
+		this->size_use = lenght;
+		// if (length > this->capacity)
+			// this->reserve(length);
+		this->_array = (this->alloc).allocate(lenght * 2);
+		for (size_t i = 0; first != last; first++, i++)
+			(this->alloc).construct(_array + i, *first);
+	}
+
+	void	my_constructor_helper(int first, int last)
+	{
+		size_t lenght = static_cast<size_t>(first);
+		this->capacity = lenght * 2;
+		this->size_use = lenght;
+		// if (length > this->capacity)
+			// this->reserve(length);
+		this->_array = (this->alloc).allocate(lenght * 2);
+		for (size_t i = 0; i < lenght; ++i)
+			(this->alloc).construct(_array + i, static_cast<value_type&>(last));
+	}
+
 public:
 	explicit vector (const allocator_type& alloc = allocator_type()): 
 			_array(nullptr), size_use(0), capacity(0)	{ (void)alloc; }
     explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 	{
+		(void)alloc;
 		this->capacity = n * 2;
 		this->size_use = n;
-		this->_array = __alloc_traits::allocate(alloc, n * 2);
-		for (int i = 0; i < n; i++)
-			__alloc_traits::construct(alloc, _array + i, val);
+		this->_array = (this->alloc).allocate(n * 2);
+		for (size_t i = 0; i < n; i++)
+			(this->alloc).construct(_array + i, val);
 	}
     template <class InputIterator>
-        vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
-		{
-			// if (typeid(value_type) == typeid(InputIterator))
-			// {
-			// 	this->capacity = first * 2;
-			// 	this->size_use = first;
-			// 	this->_array = __alloc_traits::allocate(alloc, static_cast<size_t>(first) * 2);
-			// 	for (int i = 0; i < first; i++)
-			// 		__alloc_traits::construct(alloc, _array + i, static_cast<size_t>(last));
-			// }
-			(void)first;
-			(void)last;
-			(void)alloc;
-		}
+    vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+	{
+		this->my_constructor_helper(first, last);
+		(void)alloc;
+	}
     vector (const vector& x)
 	{
 		(void)x;
 	}
 	virtual ~vector()
 	{
-		// if (_array == nullptr)
-		// 	return ;
-		// for (size_t i = 0; i < this->size_use; i++)
-		// 	alloc.destroy(_array + i);
-		// alloc.deallocate(_array, this->capacity);
+		if (_array == nullptr)
+			return ;
+		for (size_t i = 0; i < this->size_use; i++)
+			(this->alloc).destroy (_array + i);
+		(this->alloc).deallocate (_array, this->capacity);
 	}
 
 	vector& 		operator=(const vector& x);
     reference       operator[](size_type n)
 	{
 		if (n < size())
-    		return this->__begin_[n];
+			return (this->_array[n]);
 		else
-			return (nullptr);	//exeption; "vector[] index out of bounds"
+			throw vector::LimitingArgumentsException();
 	}
     const_reference operator[](size_type n) const
 	{
 		if (n < size())
-    		return this->__begin_[n];
+			return (this->_array[n]);
 		else
-			return (nullptr);	//exeption; "vector[] index out of bounds"
+			throw vector::LimitingArgumentsException();
 	}
+
+	class LimitingArgumentsException : public std::exception {
+		virtual const char* what() const throw() {
+			return "LimitingArgumentsException: ft::vector there is no <n> argument";
+		}
+	};
 
     void    push_back(const T& val);
 	size_type size() const
@@ -100,6 +124,7 @@ public:
 // #include "vector.ipp"
 }
 
+// Цветной консольный вывод
 namespace ansi
 {
 	template < class CharT, class Traits >
