@@ -64,7 +64,7 @@ int main()
     std::cout << "std:: [resize] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
 
     // std::cout << ansi::reset;
-    std::cout << ansi::foreground_cyan; /* тест ft::vector */
+    std::cout << ansi::foreground_yellow; /* тест ft::vector */
 
     ft::vector<int> v_int1;
     ft::vector<int> v_int2(4);
@@ -81,7 +81,7 @@ int main()
     std::cout << "ft:: v(4,5): size = " << v_int3.size() << " "; ft_cout_vector(v_int3);
     std::cout << "ft:: v()=v(): size = " << v_int5.size() << " "; ft_cout_vector(v_int5);
     std::cout << "ft:: v(Prt,Ptr): size = " << v_int4.size() << " "; ft_cout_vector(v_int4);
-    
+
     std::cout << "---------ft::Capacity---------\n";
     std::cout << "ft:: v(): [max_size] = " << v_int1.max_size() << std::endl;
 
@@ -91,13 +91,20 @@ int main()
     v_int6.resize(8,100);
     v_int6.resize(12);
 
-    std::cout << "ft:: [resize] sz = " << v_int6.size() << " "; ft_cout_vector(v_int6);
+    std::cout << "ft:: [resize] \nsz = " << v_int6.size() << " "; ft_cout_vector(v_int6);
+    v_int6.resize(7);
+    std::cout << "sz = " << v_int6.size() << " "; ft_cout_vector(v_int6);
+    std::cout << std::endl;
+
     std::cout << "ft:: [empty] = " << v_int6.empty() << std::endl;
     std::cout << "ft:: [reserve] cap before = " << v_int6.capacity() << std::endl;
     v_int6.reserve(40);
     std::cout << "cap after(grow) = " << v_int6.capacity() << " "; ft_cout_vector(v_int6);
     v_int6.reserve(20);
     std::cout << "cap after(low) = " << v_int6.capacity() << " "; ft_cout_vector(v_int6);
+    std::cout << std::endl;
+
+    std::cout << v_int6.back() << "\n";
 
     std::cout << ansi::reset;
     

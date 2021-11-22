@@ -4,6 +4,7 @@
 #include <memory>
 #include <typeinfo>
 #include <unistd.h>
+#include <stdexcept>
 
 #include <iostream>
 
@@ -194,14 +195,14 @@ public:
 
 		if (this->_capacity < n)
 		{
-			new_array = (this->alloc).allocate(n + 20);
+			new_array = (this->alloc).allocate(n);
 			for (size_t i = 0; i < this->_size; i++)
 				(this->alloc).construct(new_array + i, *(this->_array + i));
 			for (size_t i = 0; i < this->_size; i++)
 				(this->alloc).destroy (_array + i);
 			(this->alloc).deallocate (_array, this->_capacity);
 			this->_array = new_array;
-			this->_capacity = n + 20;
+			this->_capacity = n;
 		}
 	}
 
@@ -209,41 +210,70 @@ public:
 
     reference       operator[](size_type n)
 	{
-		if (n < size())
-			return (this->_array[n]);
-		else
+		if (n >= this->_size || n < 0)
 			throw vector::LimitingArgumentsException();
+		return (this->_array[n]);
 	}
 
     const_reference operator[](size_type n) const
 	{
-		if (n < size())
-			return (this->_array[n]);
-		else
+		if (n >= this->_size || n < 0)
 			throw vector::LimitingArgumentsException();
+		return (this->_array[n]);
+	}
+
+    reference at (size_type n)
+	{
+		if (n >= this->_size || n < 0)
+			throw std::out_of_range("Vector index out of range");
+		return (this->_array[n]);
+	}
+
+	const_reference at (size_type n) const
+	{
+		if (n >= this->_size || n < 0)
+			throw std::out_of_range("Vector index out of range");
+		return (this->_array[n]);
+	}
+
+    reference front()
+	{
+		return (this->_array[0]);
+	}
+	
+	const_reference front() const
+	{
+		return (this->_array[0]);
+	}
+
+	reference back()
+	{
+		return (this->_array[this->_size - 1]);
+	}
+	
+	const_reference back() const
+	{
+		return (this->_array[this->_size - 1]);
 	}
 
 	//-----------------------Modifiers-----------------------//
 
-    // void    push_back(const T& val) // не факт что работает
-	// {
-	// 	if (this->_size < this->_capacity)
-	// 	{
-	// 		(this->alloc).construct(Alloc, array + _size, x);
-	// 		_size++;
-	// 	}
-	// 	else
-	// 	{
-	// 		T* new_arr = (this->alloc).allocate(Alloc, this->_capacity * 2);
-	// 		for (int i = 0; i < this->_capacity; i++)
-	// 			(this->alloc).construct(Alloc, new_arr + i, array[i]);
-	// 		for (int i = 0; i < this->_capacity; i++)
-	// 			(this->alloc).destroy(Alloc, array + i);
-	// 		(this->alloc).deallocate(Alloc, this->_capacity);
-	// 		this->_capacity *= 2;
-	// 		array = new_arr;
-	// 	}
-	// }
+    void    push_back(const T& val) // need more test
+	{
+		if (this->_size == this->_capacity)
+		{
+			T* new_array = (this->alloc).allocate(this->_capacity * 2);
+			for (size_t i = 0; i < this->_capacity; i++)
+				(this->alloc).construct(new_array + i, *(_array + i));
+			for (size_t i = 0; i < this->_capacity; i++)
+				(this->alloc).destroy(this->_array + i);
+			(this->alloc).deallocate(_array, this->_capacity);
+			this->_capacity *= 2;
+			this->_array = new_array;
+		}
+		(this->alloc).construct(_array + this->_size, val);
+		this->_size++;
+	}
 	
 	void clear(void)
 	{
