@@ -18,20 +18,20 @@
 
 // template<typename T, typename Alloc>
 // void vector<T, Alloc>::push_back(const T& val) {
-//     if (this->size_use < this->capacity)
+//     if (this->_size < this->_capacity)
 //     {
-//         std::allocator_traits<Alloc>::construct(Alloc, array + size_use, x);
-//         size_use++;
+//         std::allocator_traits<Alloc>::construct(Alloc, array + _size, x);
+//         _size++;
 //     }
 //     else
 //     {
-//         T* new_arr = allocator_traits<Alloc>::allocate(Alloc, this->capacity * 2);
-//         for (int i = 0; i < this->capacity; i++)
+//         T* new_arr = allocator_traits<Alloc>::allocate(Alloc, this->_capacity * 2);
+//         for (int i = 0; i < this->_capacity; i++)
 //             std::allocator_traits<Alloc>::construct(Alloc, new_arr + i, array[i]);
-//         for (int i = 0; i < this->capacity; i++)
+//         for (int i = 0; i < this->_capacity; i++)
 //             std::allocator_traits<Alloc>::destroy(Alloc, array + i);
-//         std::allocator_traits<Alloc>::deallocate(Alloc, this->capacity);
-//         this->capacity *= 2;
+//         std::allocator_traits<Alloc>::deallocate(Alloc, this->_capacity);
+//         this->_capacity *= 2;
 //         array = new_arr;
 //     }
 // }
