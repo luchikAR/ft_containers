@@ -6,7 +6,8 @@
 - 22.11 - реализовал конструкторы
         - operator==, ft: clear (not std), max_size, resize, capacity, empty
         - не доделаны ft push_back
-
+- 23.11 - Изменил структуру папок + Makefile, добавил std_main для тестов на время работы.
+        - исправил max_size, 
 
 Используемые технологии:
 - std::allocator
