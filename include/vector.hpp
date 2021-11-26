@@ -169,15 +169,13 @@ template<class T, class Alloc = std::allocator<T> >
 class vector
 {
 	//-----------------------Typedef-----------------------//
-private:
-    typedef std::__vector_base<T, Alloc>           	__base;
 public:
     typedef T                                     	value_type;
     typedef Alloc		                           	allocator_type;
     typedef std::allocator<allocator_type>    		__alloc;
     typedef value_type&                            	reference;
     typedef const value_type&                      	const_reference;
-    typedef typename __alloc::size_type       		size_type;
+	typedef unsigned long 							size_type;
     typedef typename __alloc::difference_type 		difference_type;
     typedef typename __alloc::pointer         		pointer;
     typedef typename __alloc::const_pointer   		const_pointer;
@@ -193,41 +191,42 @@ private:
     size_t  _capacity;
     Alloc   alloc;
 
-    pointer                                         __begin_;
-    pointer                                         __end_;
-    // __compressed_pair<pointer, allocator_type> 		__end_cap_;
-
 	//-----------------------Constructor-----------------------//
 private:
 	template <class InputIterator>
 	void	my_constructor_helper(InputIterator first, InputIterator last)
 	{
 		size_t lenght = last - first;
-		this->_capacity = lenght * 2;
 		this->_size = lenght;
-		// if (length > this->_capacity)
-			// this->reserve(length);
-		this->_array = (this->alloc).allocate(lenght * 2);
+		if (this->_capacity < lenght)
+		{
+			if (this->_capacity != 0)
+				(this->alloc).deallocate (_array, this->_capacity);
+			this->_capacity = lenght * 2;
+			this->_array = (this->alloc).allocate(lenght * 2);
+		}
 		for (size_t i = 0; first != last; first++, i++)
 			(this->alloc).construct(_array + i, *first);
 	}
 
-	void	my_constructor_helper(int first, int last)
+	void	my_constructor_helper(int n, value_type val)
 	{
-		size_t lenght = static_cast<size_t>(first);
-		this->_capacity = lenght * 2;
+		size_t lenght = static_cast<size_t>(n);
 		this->_size = lenght;
-		// if (length > this->_capacity)
-			// this->reserve(length);
-		this->_array = (this->alloc).allocate(lenght * 2);
+		if (this->_capacity < lenght)
+		{
+			if (this->_capacity != 0)
+				(this->alloc).deallocate (_array, this->_capacity);
+			this->_capacity = lenght * 2;
+			this->_array = (this->alloc).allocate(lenght * 2);
+		}
 		for (size_t i = 0; i < lenght; ++i)
-			(this->alloc).construct(_array + i, static_cast<value_type&>(last));
+			(this->alloc).construct(_array + i, static_cast<value_type&>(val));
 	}
 
 public:
 	explicit vector (const allocator_type& alloc = allocator_type()): 
 			_array(nullptr), _size(0), _capacity(0)	{ (void)alloc; }
-
     explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 	{
 		(void)alloc;
@@ -237,29 +236,22 @@ public:
 		for (size_t i = 0; i < n; i++)
 			(this->alloc).construct(_array + i, val);
 	}
-
     template <class InputIterator>
-    vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+    vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()):
+		_array(nullptr), _size(0), _capacity(0)
 	{
 		this->my_constructor_helper(first, last);
 		(void)alloc;
 	}
-
     vector (const vector& x)
 	{
-		this->clear();
-		if (this->_capacity < x._capacity)
-		{
-			if (this->_array != nullptr)
-				(this->alloc).deallocate (_array, this->_capacity);
-			this->_capacity = x._capacity;
-			this->_size = x._size;
-			this->_array = (this->alloc).allocate(x._capacity);
-		}
+		this->_capacity = x._capacity;
+		this->_size = x._size;
+		this->alloc = x.alloc;
+		this->_array = (this->alloc).allocate(x._capacity);
 		for (size_t i = 0; i < x._size; i++)
 			(this->alloc).construct(_array + i, *(x._array + i));
 	}
-
 	virtual ~vector()
 	{
 		if (_array == nullptr)
@@ -268,7 +260,6 @@ public:
 			(this->alloc).destroy (_array + i);
 		(this->alloc).deallocate (_array, this->_capacity);
 	}
-
 	vector& 		operator=(const vector& x)
 	{
 		this->clear();
@@ -437,17 +428,57 @@ public:
 
 	//-----------------------Modifiers-----------------------//
 
-    void    push_back(const T& val) // need more test
+	// void assign (iterator first, iterator last)
+	template <class InputIterator>
+	void assign (InputIterator first, InputIterator last)
 	{
+		this->clear();
+		size_t lenght = last - first;
+		this->_size = lenght;
+		if (this->_capacity < lenght)
+		{
+			if (this->_array != nullptr)
+				(this->alloc).deallocate (_array, this->_capacity);
+			this->_capacity = lenght * 2;
+			this->_array = (this->alloc).allocate(lenght * 2);
+		}
+		for (size_t i = 0; first != last; first++, i++)
+			(this->alloc).construct(_array + i, *first);
+	}
+
+	// here should be void assign (size_type n, ...
+	void assign (int n, const value_type& val)
+	{
+		this->clear();
+		size_t lenght = static_cast<size_t>(n);
+		this->_size = lenght;
+		if (this->_capacity < lenght)
+		{
+			if (this->_array != nullptr)
+				(this->alloc).deallocate (_array, this->_capacity);
+			this->_capacity = lenght * 2;
+			this->_array = (this->alloc).allocate(lenght * 2);
+		}
+		for (size_t i = 0; i < lenght; ++i)
+			(this->alloc).construct(_array + i, val);
+	}
+
+    void    push_back(const T& val)
+	{
+		size_t cap2;
+		if (this->_capacity == 0)
+			cap2 = 2;
+		else
+			cap2 = this->_capacity * 2;
 		if (this->_size == this->_capacity)
 		{
-			T* new_array = (this->alloc).allocate(this->_capacity * 2);
+			T* new_array = (this->alloc).allocate(cap2);
 			for (size_t i = 0; i < this->_capacity; i++)
 				(this->alloc).construct(new_array + i, *(_array + i));
 			for (size_t i = 0; i < this->_capacity; i++)
 				(this->alloc).destroy(this->_array + i);
 			(this->alloc).deallocate(_array, this->_capacity);
-			this->_capacity *= 2;
+			this->_capacity = cap2;
 			this->_array = new_array;
 		}
 		(this->alloc).construct(_array + this->_size, val);
@@ -457,7 +488,7 @@ public:
 	void clear(void)
 	{
 		for (size_t i = 0; i < this->_size; i++)
-			(this->alloc).destroy (_array + i);
+			(this->alloc).destroy(this->_array + i);
 		this->_size = 0;
 	}
 

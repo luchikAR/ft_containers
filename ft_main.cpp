@@ -64,6 +64,10 @@ int main()
     std::cout << "std:: [resize] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
     sv_int5.resize(7);
     ft_cout_vector(sv_int5);
+    sv_int5.assign(v1PtrA, v2PtrA);
+    std::cout << "std:: [assign] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+    sv_int5.assign(5, 5);
+    std::cout << "std:: [assign] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
 
     // std::cout << ansi::reset;
     std::cout << ansi::foreground_yellow; /* тест ft::vector */
@@ -88,7 +92,7 @@ int main()
     std::cout << "ft:: v(): [max_size] = " << v_int1.max_size() << std::endl;
 
     ft::vector<int> v_int6;
-    for (int i=1; i<10; i++) v_int6.push_back(i);
+    for (int i = 1; i < 10; i++) v_int6.push_back(i);
     v_int6.resize(5);
     v_int6.resize(8,100);
     v_int6.resize(12);
@@ -133,8 +137,22 @@ int main()
     for (std::vector<int>::reverse_iterator it = sv_int5.rbegin() ; it != sv_int5.rend(); ++it)
         std::cout << ' ' << *it;
     std::cout << std::endl;
+    std::cout << "---------ft::Modifiers---------\n";
+
+    ft::vector<int> v_int9;
+    std::cout << "ft:: v_9: size = " << v_int9.size() << " cap = " << v_int9.capacity() << " "; ft_cout_vector(v_int9);
+    v_int9.push_back(10);
+    std::cout << "ft:: v_9: size = " << v_int9.size() << " cap = " << v_int9.capacity() << " "; ft_cout_vector(v_int9);
+    v_int9.push_back(11);
+    std::cout << "ft:: v_9: size = " << v_int9.size() << " cap = " << v_int9.capacity() << " "; ft_cout_vector(v_int9);
+    v_int9.clear();
+    std::cout << "ft:: v_9: size = " << v_int9.size() << " cap = " << v_int9.capacity() << " "; ft_cout_vector(v_int9);
+
+    v_int9.assign(v1PtrA, v2PtrA);
+    std::cout << "ft:: [assign] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
+    v_int9.assign(5, 5);
+    std::cout << "ft:: [assign] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
 
     std::cout << ansi::reset;
-    
     return 0;
 }
