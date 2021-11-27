@@ -153,6 +153,19 @@ int main()
     v_int9.assign(5, 5);
     std::cout << "ft:: [assign] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
 
+    int sum = 0;
+    while (!v_int9.empty())
+    {
+        sum += v_int9.back();
+        v_int9.pop_back();
+    }
+    std::cout << "ft:: [pop_back] sum = " << sum << " sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
+
+    for (int i = 1; i < 10; i++) v_int9.push_back(i);
+    std::cout << "ft:: [erase][befor] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
+    v_int9.erase(v_int9.begin() + 5);
+    std::cout << "ft:: [erase][after] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
+
     std::cout << ansi::reset;
     return 0;
 }

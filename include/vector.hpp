@@ -112,8 +112,7 @@ public:
 };
 
 template<typename It>
-class ReverseIterator:
-	public It
+class ReverseIterator: public It
 {
 public:
 	using typename It::value_type;
@@ -353,10 +352,7 @@ public:
 
 	bool empty() const
 	{
-		if (this->_size > 0)
-			return (true);
-		else
-			return (false);
+		return (this->_size == 0);
 	}
 
 	void reserve (size_type n)
@@ -485,6 +481,37 @@ public:
 		this->_size++;
 	}
 	
+	void pop_back()
+	{
+		(this->alloc).destroy(this->_array + this->_size - 1);
+		this->_size--;
+	}
+
+	iterator erase (iterator position)
+	{
+		iterator tmp(position);
+		tmp++;
+		return (this->erase(position, tmp));
+	}
+	
+	iterator erase (iterator first, iterator last)
+	{
+		iterator it_begin = this->begin();
+		size_type count = last - first;
+		size_type i_first, i_last;
+
+		for (i_first = 0; it_begin != first; it_begin++, i_first++)
+			(void)count;
+		i_last = i_first;
+		for ( ; count > 0; i_last++, count--)
+			(this->alloc).destroy(this->_array + i_last);
+		for ( ; i_last != this->_size; i_last++, i_first++)
+		// here need construct new element and destroy old element
+			(_array + i_first) = *(this->_array + i_last);
+		this->_size -= (last - first);
+		return (it_begin);
+	}
+
 	void clear(void)
 	{
 		for (size_t i = 0; i < this->_size; i++)
