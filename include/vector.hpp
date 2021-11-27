@@ -498,18 +498,23 @@ public:
 	{
 		iterator it_begin = this->begin();
 		size_type count = last - first;
-		size_type i_first, i_last;
+		size_type i_first, i_last, res;
 
 		for (i_first = 0; it_begin != first; it_begin++, i_first++)
 			(void)count;
 		i_last = i_first;
+		res = i_first;
 		for ( ; count > 0; i_last++, count--)
 			(this->alloc).destroy(this->_array + i_last);
 		for ( ; i_last != this->_size; i_last++, i_first++)
-		// here need construct new element and destroy old element
-			(_array + i_first) = *(this->_array + i_last);
+		{
+			// here need construct new element and destroy old element
+			(this->alloc).construct(_array + i_first, *(_array + i_last));
+			(this->alloc).destroy(this->_array + i_last);
+		}
 		this->_size -= (last - first);
-		return (it_begin);
+		iterator it_res = this->begin() + res;
+		return (it_res);
 	}
 
 	void clear(void)
