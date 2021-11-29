@@ -24,7 +24,7 @@ $(NAME): $(OBJS) $(hpp)
 	@printf "\033[0m"
 
 # speed_test_vector - test speed std::vector
-std: $(OBJS_STD) $(hpp)
+speed: $(OBJS_STD) $(hpp)
 	@$(CXX) $(OBJS_STD) -o $@
 
 %.o: %.cpp
