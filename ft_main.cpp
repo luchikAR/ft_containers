@@ -181,6 +181,41 @@ int main()
     myvector.insert (myvector.begin(), myarray, myarray + 3);
     std::cout << "ft:: [insert] = ";  ft_cout_vector(myvector);
 
+    ft::vector<int> v_int_1 (3,100);
+    ft::vector<int> v_int_2 (5,333);
+    std::cout << "ft:: [swap][befor][1] = "; ft_cout_vector(v_int_1);
+    std::cout << "ft:: [swap][befor][2] = "; ft_cout_vector(v_int_2);
+    v_int_1.swap(v_int_2);
+    std::cout << "ft:: [swap][after][1] = "; ft_cout_vector(v_int_1);
+    std::cout << "ft:: [swap][after][2] = "; ft_cout_vector(v_int_2);
+
+	//-----------------------Allocator-----------------------//
+
+    ft::vector<int> myvector1;
+    int*    p;
+    unsigned int i;
+    // allocate an array with space for 5 elements using vector's allocator:
+    p = myvector1.get_allocator().allocate(5);
+    // construct values in-place on the array:
+    for (i=0; i<5; i++) myvector1.get_allocator().construct(&p[i],i);
+    std::cout << "The allocated array contains:";
+    for (i=0; i<5; i++) std::cout << ' ' << p[i];
+    std::cout << '\n';
+    // destroy and deallocate:
+    for (i=0; i<5; i++) myvector1.get_allocator().destroy(&p[i]);
+    myvector1.get_allocator().deallocate(p,5);
+
+	//-----------------------Relational operators-----------------------//
+    ft::vector<int> foo (3,100);   // three ints with a value of 100
+    ft::vector<int> bar (2,200);   // two ints with a value of 200
+
+    std::cout << "---------Relational operators---------" << std::endl;
+    if (foo == bar) std::cout << "foo and bar are equal\n";
+    if (foo != bar) std::cout << "foo and bar are not equal\n";
+    if (foo <  bar) std::cout << "foo is less than bar\n";
+    if (foo >  bar) std::cout << "foo is greater than bar\n";
+    if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+    if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
 
     std::cout << ansi::reset;
     return 0;

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <iterator>
+#include <algorithm>
 
 #include <iostream>
 
@@ -275,12 +276,10 @@ public:
 	{
 		return (this->_size);
 	}
-
 	size_type max_size() const
 	{
 		return (this->alloc.max_size());
 	}
-
 	void resize (size_type n, value_type val = value_type())
 	{
 		T* new_array;
@@ -312,17 +311,14 @@ public:
 			this->_capacity = n * 2;
 		}
 	}
-
 	size_type capacity() const
 	{
 		return (this->_capacity);
 	}
-
 	bool empty() const
 	{
 		return (this->_size == 0);
 	}
-
 	void reserve (size_type n)
 	{
 		T* new_array;
@@ -420,7 +416,7 @@ public:
 			(this->alloc).construct(_array + i, val);
 	}
 
-    void    push_back(const T& val)
+    void push_back(const T& val)
 	{
 		size_t cap2;
 		if (this->_capacity == 0)
@@ -441,13 +437,11 @@ public:
 		(this->alloc).construct(_array + this->_size, val);
 		this->_size++;
 	}
-	
 	void pop_back()
 	{
 		(this->alloc).destroy(this->_array + this->_size - 1);
 		this->_size--;
 	}
-
 	iterator insert (iterator position, const value_type& val)
 	{
 		this->insert(position, 1, val);
@@ -504,14 +498,12 @@ public:
 		for ( ; n2 > 0; n2--, i_end++, first++)
 			(this->alloc).construct(_array + i_end, *first);
 	}
-
 	iterator erase (iterator position)
 	{
 		iterator tmp(position);
 		tmp++;
 		return (this->erase(position, tmp));
 	}
-	
 	iterator erase (iterator first, iterator last)
 	{
 		iterator it_begin = this->begin();
@@ -534,7 +526,12 @@ public:
 		it_res = this->begin() + res;
 		return (it_res);
 	}
-
+	void swap (vector& x)
+	{
+		std::swap(this->_array, x._array);
+		std::swap(this->_capacity, x._capacity);
+		std::swap(this->_size, x._size);
+	}
 	void clear(void)
 	{
 		for (size_t i = 0; i < this->_size; i++)
@@ -544,6 +541,10 @@ public:
 
 	//-----------------------Allocator-----------------------//
 
+	allocator_type get_allocator() const {
+		return (this->alloc);
+	}
+
 	//-----------------------Exception-----------------------//
 
 	class LimitingArgumentsException : public std::exception {
@@ -552,7 +553,59 @@ public:
 		}
 	};
 };
-// #include "vector.ipp"
+
+	//-----------------------Relational operators-----------------------//
+	template <class InputIterator1, class InputIterator2>
+	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+									InputIterator2 first2, InputIterator2 last2)
+	{
+		while (first1 != last1)
+		{
+			if (first2 == last2 || *first2 < *first1)
+				return false;
+			else if (*first1 < *first2) 
+				return true;
+			++first1;
+			++first2;
+		}
+		return (first2 != last2);
+	}
+
+
+	template <class T, class Alloc>
+	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		if (lhs.size() != rhs.size())
+			return (false);
+		for (size_t i = 0; i < lhs.size(); i++)
+			if (lhs[i] != rhs[i])
+				return (false);
+		return (true);
+	}
+	template <class T, class Alloc>
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		return (!(lhs == rhs));
+	}
+	template <class T, class Alloc>
+	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		return (!(rhs < lhs));
+	}
+	template <class T, class Alloc>
+	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		return (rhs < lhs);
+	}
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		return (!(lhs < rhs));
+	}
+
+	template <class T, class Alloc>
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) {
+		x.swap(y);
+	}
 }
 
 // Цветной консольный вывод
