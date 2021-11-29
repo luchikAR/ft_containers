@@ -1,7 +1,7 @@
 NAME     = ft_containers
 
 SRCS_FT		= ft_main.cpp
-SRCS_STD	= std_main.cpp
+SRCS_STD	= speed_test_vector.cpp
 
 hpp		=  include/vector.hpp
 
@@ -12,6 +12,7 @@ OBJS_STD = $(SRCS_STD:.cpp=.o)
 CXX      = clang++
 CXXFLAGS = -std=c++98 -Wall -Werror -Wextra
 
+# ft_main - test ft::vector<int>
 all: $(NAME)
 
 $(NAME): $(OBJS) $(hpp)
@@ -22,6 +23,7 @@ $(NAME): $(OBJS) $(hpp)
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 	@printf "\033[0m"
 
+# speed_test_vector - test speed std::vector
 std: $(OBJS_STD) $(hpp)
 	@$(CXX) $(OBJS_STD) -o $@
 
