@@ -3,7 +3,11 @@
 #include <memory>
 #include <algorithm>
 
-#include "include/vector.hpp"
+#include "include/vector.hpp" 
+
+#define GREEN std::cout<<ansi::foreground_green;
+#define YELLOW std::cout << ansi::foreground_yellow;
+#define BlUE std::cout << ansi::foreground_blue;
 
 void ft_cout_vector(std::vector<int> x)
 {
@@ -33,6 +37,9 @@ void ft_cout_vector(ft::vector<int> x)
 
 int main()
 {
+    BlUE
+    std::cout << "###### Vector ######\n";
+    std::cout << "-------Constructor-------\n";
     std::vector<int> sv_int1;
     std::vector<int> sv_int2(4);
     std::vector<int> sv_int3(4, 5);
@@ -45,58 +52,50 @@ int main()
     std::allocator<int>::pointer v2PtrA = v1Alloc.address( *find( v1.begin( ), v1.end( ), 15 ) );
     std::vector<int> sv_int4(v1PtrA, v2PtrA);
 
-    std::cout << ansi::foreground_green; /* тест std::vector */
-    std::cout << "-----me main-----\n";
+    ft::vector<int> v_int1;
+    ft::vector<int> v_int2(4);
+    ft::vector<int> v_int3(4, 5);
+    ft::vector<int> v_int4(v1PtrA, v2PtrA);
+    ft::vector<int> v_int5 = v_int4;
 
-    std::cout << "-------std::constructor-------\n";
-    // std::cout << "std:: v: " << sv_int1[0] << std::endl; // seg fault
+    GREEN    
     std::cout << "std:: v(4): " << sv_int2[0] << std::endl;
     std::cout << "std:: v(4,5): size = " << sv_int3.size() << " "; ft_cout_vector(sv_int3);
     std::cout << "std:: v(Prt,Ptr): size = " << sv_int4.size() << " "; ft_cout_vector(sv_int4);
-    std::cout << "---------ft::Capacity---------\n";
-    std::cout << "std:: v(): [max_size] = " << sv_int1.max_size() << std::endl;
-    
+    YELLOW
+    std::cout << "ft:: v(4): " << v_int2[0] << std::endl;
+    std::cout << "ft:: v(4,5): size = " << v_int3.size() << " "; ft_cout_vector(v_int3);
+    std::cout << "ft:: v(Prt,Ptr): size = " << v_int4.size() << " "; ft_cout_vector(v_int4);
+    std::cout << "ft:: v()=v(): size = " << v_int5.size() << " "; ft_cout_vector(v_int5);
+
+    std::cout << "---------Capacity---------\n";
+
+    GREEN
+    std::cout << "std:: [max_size][sv_int1] = " << sv_int1.max_size() << std::endl;
     std::vector<int> sv_int5;
     for (int i=1; i<10; i++) sv_int5.push_back(i);
     sv_int5.resize(5);
     sv_int5.resize(8,100);
     sv_int5.resize(12);
-    std::cout << "std:: [resize] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
-    sv_int5.resize(7);
-    ft_cout_vector(sv_int5);
-    sv_int5.assign(v1PtrA, v2PtrA);
-    std::cout << "std:: [assign] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
-    sv_int5.assign(5, 5);
-    std::cout << "std:: [assign] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+    std::cout << "std:: [resize] \nsz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+    sv_int5.resize(7); 
+    std::cout << "sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+    
+    std::cout << "std:: [empty] = " << sv_int5.empty() << std::endl;
+    std::cout << "std:: [reserve] cap before = " << sv_int5.capacity() << std::endl;
+    sv_int5.reserve(40);
+    std::cout << "\tcap after(grow) = " << sv_int5.capacity() << " "; ft_cout_vector(sv_int5);
+    sv_int5.reserve(20);
+    std::cout << "\tcap after(low) = " << sv_int5.capacity() << " "; ft_cout_vector(sv_int5);
+    std::cout << std::endl;
 
-    // std::cout << ansi::reset;
-    std::cout << ansi::foreground_yellow; /* тест ft::vector */
-
-    ft::vector<int> v_int1;
-    ft::vector<int> v_int2(4);
-    ft::vector<int> v_int3(4, 5);
-    ft::vector<int> v_int4(v1PtrA, v2PtrA);
-    ft::vector<int> v_int5 = v_int3;
-
-    std::cout << "---------ft::Constructor---------\n";
-    // try {
-    // std::cout << "ft:: v: " << v_int1[0] << std::endl;
-    // }
-    // catch(const std::exception& e) { std::cerr << e.what() << '\n'; }
-    std::cout << "ft:: v(4): " << v_int2[0] << std::endl;
-    std::cout << "ft:: v(4,5): size = " << v_int3.size() << " "; ft_cout_vector(v_int3);
-    std::cout << "ft:: v()=v(): size = " << v_int5.size() << " "; ft_cout_vector(v_int5);
-    std::cout << "ft:: v(Prt,Ptr): size = " << v_int4.size() << " "; ft_cout_vector(v_int4);
-
-    std::cout << "---------ft::Capacity---------\n";
-    std::cout << "ft:: v(): [max_size] = " << v_int1.max_size() << std::endl;
-
+    YELLOW
+    std::cout << "ft:: [max_size][v_int1] = " << v_int1.max_size() << std::endl;
     ft::vector<int> v_int6;
     for (int i = 1; i < 10; i++) v_int6.push_back(i);
     v_int6.resize(5);
     v_int6.resize(8,100);
     v_int6.resize(12);
-
     std::cout << "ft:: [resize] \nsz = " << v_int6.size() << " "; ft_cout_vector(v_int6);
     v_int6.resize(7);
     std::cout << "sz = " << v_int6.size() << " "; ft_cout_vector(v_int6);
@@ -105,23 +104,49 @@ int main()
     std::cout << "ft:: [empty] = " << v_int6.empty() << std::endl;
     std::cout << "ft:: [reserve] cap before = " << v_int6.capacity() << std::endl;
     v_int6.reserve(40);
-    std::cout << "cap after(grow) = " << v_int6.capacity() << " "; ft_cout_vector(v_int6);
+    std::cout << "\tcap after(grow) = " << v_int6.capacity() << " "; ft_cout_vector(v_int6);
     v_int6.reserve(20);
-    std::cout << "cap after(low) = " << v_int6.capacity() << " "; ft_cout_vector(v_int6);
+    std::cout << "\tcap after(low) = " << v_int6.capacity() << " "; ft_cout_vector(v_int6);
     std::cout << std::endl;
 
-    std::cout << "---------ft::Element access---------\n";
+    std::cout << "---------Element access---------\n";
+
+    GREEN
+
+    const ft::vector<int> sv_int6(3, 7);
+    ft::vector<int> sv_int7(3, 7);
+    std::cout << "ft:: [1] = " << sv_int7[1] << std::endl;
+    std::cout << "ft:: const[1] = " << sv_int6[1] << std::endl;
+    std::cout << "ft:: at[1] = " << sv_int7.at(1) << std::endl;
+    std::cout << "ft:: const at[1] = " << sv_int6.at(1) << std::endl;
+    std::cout << "[push back] int[11]" << std::endl;
+    sv_int7.push_back(11);
+    std::cout << "ft:: [front] = " << sv_int7.front() << std::endl;
+    std::cout << "ft:: [back] = " << sv_int7.back() << std::endl;
+
+    YELLOW
     const ft::vector<int> v_int7(3, 7);
     ft::vector<int> v_int8(3, 7);
     std::cout << "ft:: [1] = " << v_int8[1] << std::endl;
     std::cout << "ft:: const[1] = " << v_int7[1] << std::endl;
     std::cout << "ft:: at[1] = " << v_int8.at(1) << std::endl;
     std::cout << "ft:: const at[1] = " << v_int7.at(1) << std::endl;
+    std::cout << "[push back] int[11]" << std::endl;
     v_int8.push_back(11);
     std::cout << "ft:: [front] = " << v_int8.front() << std::endl;
     std::cout << "ft:: [back] = " << v_int8.back() << std::endl;
 
-    std::cout << "---------ft::Iterators---------\n";
+    std::cout << "---------Iterators---------\n";
+    GREEN
+    std::cout << "выведем от начала до конца std::vector" << std::endl;
+    for (std::vector<int>::iterator it = sv_int5.begin() ; it != sv_int5.end(); ++it)
+        std::cout << ' ' << *it;
+    std::cout << std::endl << "выведем в обратном порядке std::vector" << std::endl;
+    for (std::vector<int>::reverse_iterator it = sv_int5.rbegin() ; it != sv_int5.rend(); ++it)
+        std::cout << ' ' << *it;
+    std::cout << std::endl;
+
+    YELLOW
     std::cout << "выведем от начала до конца ft::vector" << std::endl;
     for (ft::vector<int>::iterator it = v_int6.begin() ; it != v_int6.end(); ++it)
         std::cout << ' ' << *it;
@@ -130,15 +155,19 @@ int main()
         std::cout << ' ' << *it;
     std::cout << std::endl;
 
-    std::cout << "выведем от начала до конца std::vector" << std::endl;
-    for (std::vector<int>::iterator it = sv_int5.begin() ; it != sv_int5.end(); ++it)
-        std::cout << ' ' << *it;
-    std::cout << std::endl << "выведем в обратном порядке std::vector" << std::endl;
-    for (std::vector<int>::reverse_iterator it = sv_int5.rbegin() ; it != sv_int5.rend(); ++it)
-        std::cout << ' ' << *it;
-    std::cout << std::endl;
     std::cout << "---------ft::Modifiers---------\n";
 
+    GREEN
+    std::vector<int> sv_int9;
+    std::cout << "std:: v_9: size = " << sv_int9.size() << " cap = " << sv_int9.capacity() << " "; ft_cout_vector(sv_int9);
+    sv_int9.push_back(10);
+    std::cout << "std:: v_9: size = " << sv_int9.size() << " cap = " << sv_int9.capacity() << " "; ft_cout_vector(sv_int9);
+    sv_int9.push_back(11);
+    std::cout << "std:: v_9: size = " << sv_int9.size() << " cap = " << sv_int9.capacity() << " "; ft_cout_vector(sv_int9);
+    sv_int9.clear();
+    std::cout << "std:: v_9: size = " << sv_int9.size() << " cap = " << sv_int9.capacity() << " "; ft_cout_vector(sv_int9);
+
+    YELLOW
     ft::vector<int> v_int9;
     std::cout << "ft:: v_9: size = " << v_int9.size() << " cap = " << v_int9.capacity() << " "; ft_cout_vector(v_int9);
     v_int9.push_back(10);
@@ -148,74 +177,144 @@ int main()
     v_int9.clear();
     std::cout << "ft:: v_9: size = " << v_int9.size() << " cap = " << v_int9.capacity() << " "; ft_cout_vector(v_int9);
 
+    GREEN
+    sv_int5.assign(v1PtrA, v2PtrA);
+    std::cout << "std:: [assign] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+    sv_int5.assign(5, 5);
+    std::cout << "std:: [assign] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+    
+    YELLOW
     v_int9.assign(v1PtrA, v2PtrA);
     std::cout << "ft:: [assign] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
     v_int9.assign(5, 5);
     std::cout << "ft:: [assign] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
 
+    GREEN
+    int std_sum = 0;
+    while (!sv_int5.empty()) {
+        std_sum += sv_int5.back();
+        sv_int5.pop_back();
+    }
+    std::cout << "std:: [pop_back] sum = " << std_sum << " sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+
+    YELLOW
     int sum = 0;
-    while (!v_int9.empty())
-    {
+    while (!v_int9.empty()) {
         sum += v_int9.back();
         v_int9.pop_back();
     }
     std::cout << "ft:: [pop_back] sum = " << sum << " sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
 
+    GREEN
+    for (int i = 1; i <= 10; i++) sv_int5.push_back(i);
+    std::cout << "std:: [erase][befor] sz = " << sv_int5.size() << " "; ft_cout_vector(sv_int5);
+    std::vector<int>::iterator it_std_res = sv_int5.erase(sv_int5.begin() + 5);
+    std::cout << "std:: [erase][after] sz = " << sv_int5.size() << " res = " << *it_std_res << " "; ft_cout_vector(sv_int5);
+    it_std_res = sv_int5.erase (sv_int5.begin(), sv_int5.begin() + 3);
+    std::cout << "std:: [erase][after] sz = " << sv_int5.size() << " res = " << *it_std_res << " "; ft_cout_vector(sv_int5);
+
+    YELLOW
     for (int i = 1; i <= 10; i++) v_int9.push_back(i);
     std::cout << "ft:: [erase][befor] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
     ft::vector<int>::iterator it_res = v_int9.erase(v_int9.begin() + 5);
-    // std::cout << "res = " << *it_res << std::endl;
-    std::cout << "ft:: [erase][after] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
+    std::cout << "ft:: [erase][after] sz = " << v_int9.size() << " res = " << *it_res << " "; ft_cout_vector(v_int9);
     it_res = v_int9.erase (v_int9.begin(), v_int9.begin() + 3);
-    // std::cout << "res = " << *it_res << std::endl;
-    std::cout << "ft:: [erase][after] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
+    std::cout << "ft:: [erase][after] sz = " << v_int9.size() << " res = " << *it_res << " "; ft_cout_vector(v_int9);
 
-    ft::vector<int> myvector (3, 100);
-    ft::vector<int>::iterator it = myvector.begin();
-    it = myvector.insert ( it , 200 );
-    myvector.insert (it, 2, 300);
-    it = myvector.begin();
-    ft::vector<int> anothervector (2, 400);
-    myvector.insert (it + 2, anothervector.begin(), anothervector.end());
-    int myarray [] = { 501,502,503 };
-    myvector.insert (myvector.begin(), myarray, myarray + 3);
-    std::cout << "ft:: [insert] = ";  ft_cout_vector(myvector);
+    GREEN
+    {
+        std::vector<int> myvector_std (3, 100);
+        std::vector<int>::iterator it_std = myvector_std.begin();
+        it_std = myvector_std.insert ( it_std , 200 );
+        myvector_std.insert (it_std, 2, 300);
+        it_std = myvector_std.begin();
+        std::vector<int> anothervector_str (2, 400);
+        myvector_std.insert (it_std + 2, anothervector_str.begin(), anothervector_str.end());
+        int myarray [] = { 501,502,503 };
+        myvector_std.insert (myvector_std.begin(), myarray, myarray + 3);
+        std::cout << "std:: [insert] = ";  ft_cout_vector(myvector_std);
+    }
+    YELLOW
+    {
+        ft::vector<int> myvector (3, 100);
+        ft::vector<int>::iterator it = myvector.begin();
+        it = myvector.insert ( it , 200 );
+        myvector.insert (it, 2, 300);
+        it = myvector.begin();
+        ft::vector<int> anothervector (2, 400);
+        myvector.insert (it + 2, anothervector.begin(), anothervector.end());
+        int myarray [] = { 501,502,503 };
+        myvector.insert (myvector.begin(), myarray, myarray + 3);
+        std::cout << "ft:: [insert] = ";  ft_cout_vector(myvector);
 
-    ft::vector<int> v_int_1 (3,100);
-    ft::vector<int> v_int_2 (5,333);
-    std::cout << "ft:: [swap][befor][1] = "; ft_cout_vector(v_int_1);
-    std::cout << "ft:: [swap][befor][2] = "; ft_cout_vector(v_int_2);
-    v_int_1.swap(v_int_2);
-    std::cout << "ft:: [swap][after][1] = "; ft_cout_vector(v_int_1);
-    std::cout << "ft:: [swap][after][2] = "; ft_cout_vector(v_int_2);
+        ft::vector<int> v_int_1 (3,100);
+        ft::vector<int> v_int_2 (5,333);
+        std::cout << "ft:: [swap][befor][1] = "; ft_cout_vector(v_int_1);
+        std::cout << "ft:: [swap][befor][2] = "; ft_cout_vector(v_int_2);
+        v_int_1.swap(v_int_2);
+        std::cout << "ft:: [swap][after][1] = "; ft_cout_vector(v_int_1);
+        std::cout << "ft:: [swap][after][2] = "; ft_cout_vector(v_int_2);
+    }
 
-	//-----------------------Allocator-----------------------//
-
-    ft::vector<int> myvector1;
-    int*    p;
-    unsigned int i;
-    // allocate an array with space for 5 elements using vector's allocator:
-    p = myvector1.get_allocator().allocate(5);
-    // construct values in-place on the array:
-    for (i=0; i<5; i++) myvector1.get_allocator().construct(&p[i],i);
-    std::cout << "The allocated array contains:";
-    for (i=0; i<5; i++) std::cout << ' ' << p[i];
-    std::cout << '\n';
-    // destroy and deallocate:
-    for (i=0; i<5; i++) myvector1.get_allocator().destroy(&p[i]);
-    myvector1.get_allocator().deallocate(p,5);
-
-	//-----------------------Relational operators-----------------------//
-    ft::vector<int> foo (3,100);   // three ints with a value of 100
-    ft::vector<int> bar (2,200);   // two ints with a value of 200
+    std::cout << "---------Allocator---------\n";
+    GREEN
+    {
+        std::vector<int> myvector1_std;
+        int*    p;
+        unsigned int i;
+        // allocate an array with space for 5 elements using vector's allocator:
+        p = myvector1_std.get_allocator().allocate(5);
+        // construct values in-place on the array:
+        for (i=0; i<5; i++) myvector1_std.get_allocator().construct(&p[i],i);
+        std::cout << "The allocated array contains:";
+        for (i=0; i<5; i++) std::cout << ' ' << p[i];
+        std::cout << '\n';
+        // destroy and deallocate:
+        for (i=0; i<5; i++) myvector1_std.get_allocator().destroy(&p[i]);
+        myvector1_std.get_allocator().deallocate(p,5);
+    }
+    YELLOW
+    {
+        ft::vector<int> myvector1;
+        int*    p;
+        unsigned int i;
+        // allocate an array with space for 5 elements using vector's allocator:
+        p = myvector1.get_allocator().allocate(5);
+        // construct values in-place on the array:
+        for (i=0; i<5; i++) myvector1.get_allocator().construct(&p[i],i);
+        std::cout << "The allocated array contains:";
+        for (i=0; i<5; i++) std::cout << ' ' << p[i];
+        std::cout << '\n';
+        // destroy and deallocate:
+        for (i=0; i<5; i++) myvector1.get_allocator().destroy(&p[i]);
+        myvector1.get_allocator().deallocate(p,5);
+    }
 
     std::cout << "---------Relational operators---------" << std::endl;
-    if (foo == bar) std::cout << "foo and bar are equal\n";
-    if (foo != bar) std::cout << "foo and bar are not equal\n";
-    if (foo <  bar) std::cout << "foo is less than bar\n";
-    if (foo >  bar) std::cout << "foo is greater than bar\n";
-    if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
-    if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
+    GREEN
+    {
+        std::vector<int> foo (3,100);   // three ints with a value of 100
+        std::vector<int> bar (2,200);   // two ints with a value of 200
+
+        if (foo == bar) std::cout << "foo and bar are equal\n";
+        if (foo != bar) std::cout << "foo and bar are not equal\n";
+        if (foo <  bar) std::cout << "foo is less than bar\n";
+        if (foo >  bar) std::cout << "foo is greater than bar\n";
+        if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+        if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
+    }
+    YELLOW
+    {
+        ft::vector<int> foo (3,100);   // three ints with a value of 100
+        ft::vector<int> bar (2,200);   // two ints with a value of 200
+
+        if (foo == bar) std::cout << "foo and bar are equal\n";
+        if (foo != bar) std::cout << "foo and bar are not equal\n";
+        if (foo <  bar) std::cout << "foo is less than bar\n";
+        if (foo >  bar) std::cout << "foo is greater than bar\n";
+        if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+        if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
+    }
 
     std::cout << ansi::reset;
     return 0;
