@@ -191,38 +191,6 @@ private:
     Alloc   alloc;
 
 	//-----------------------Constructor-----------------------//
-private:
-	template <class InputIterator>
-	void	my_constructor_helper(InputIterator first, InputIterator last)
-	{
-		size_t lenght = last - first;
-		this->_size = lenght;
-		if (this->_capacity < lenght)
-		{
-			if (this->_capacity != 0)
-				(this->alloc).deallocate (_array, this->_capacity);
-			this->_capacity = lenght * 2;
-			this->_array = (this->alloc).allocate(lenght * 2);
-		}
-		for (size_t i = 0; first != last; first++, i++)
-			(this->alloc).construct(_array + i, *first);
-	}
-
-	void	my_constructor_helper(int n, value_type val)
-	{
-		size_t lenght = static_cast<size_t>(n);
-		this->_size = lenght;
-		if (this->_capacity < lenght)
-		{
-			if (this->_capacity != 0)
-				(this->alloc).deallocate (_array, this->_capacity);
-			this->_capacity = lenght * 2;
-			this->_array = (this->alloc).allocate(lenght * 2);
-		}
-		for (size_t i = 0; i < lenght; ++i)
-			(this->alloc).construct(_array + i, static_cast<value_type&>(val));
-	}
-
 public:
 	explicit vector (const allocator_type& alloc = allocator_type()): 
 			_array(nullptr), _size(0), _capacity(0)	{ (void)alloc; }
@@ -239,7 +207,7 @@ public:
     vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()):
 		_array(nullptr), _size(0), _capacity(0)
 	{
-		this->my_constructor_helper(first, last);
+		this->assign(first, last);
 		(void)alloc;
 	}
     vector (const vector& x)
@@ -380,43 +348,36 @@ public:
 			throw vector::LimitingArgumentsException();
 		return (this->_array[n]);
 	}
-
     const_reference operator[](size_type n) const
 	{
 		if (n >= this->_size || n < 0)
 			throw vector::LimitingArgumentsException();
 		return (this->_array[n]);
 	}
-
     reference at (size_type n)
 	{
 		if (n >= this->_size || n < 0)
 			throw std::out_of_range("Vector index out of range");
 		return (this->_array[n]);
 	}
-
 	const_reference at (size_type n) const
 	{
 		if (n >= this->_size || n < 0)
 			throw std::out_of_range("Vector index out of range");
 		return (this->_array[n]);
 	}
-
     reference front()
 	{
 		return (this->_array[0]);
 	}
-	
 	const_reference front() const
 	{
 		return (this->_array[0]);
 	}
-
 	reference back()
 	{
 		return (this->_array[this->_size - 1]);
 	}
-	
 	const_reference back() const
 	{
 		return (this->_array[this->_size - 1]);
@@ -487,6 +448,63 @@ public:
 		this->_size--;
 	}
 
+	iterator insert (iterator position, const value_type& val)
+	{
+		this->insert(position, 1, val);
+		return (position);
+	}
+
+    // void insert (iterator position, size_type n, const value_type& val)
+    void insert (iterator position, int n, const value_type& val)
+	{
+		iterator it_begin = this->begin();
+		size_type n2 = n;
+		int i_end = this->_size - 1;
+		int pos	= 0;
+
+		if (this->_capacity < this->_size + n)
+			this->resize(this->_size + n);
+		else
+			this->_size += n;
+
+		for ( ; it_begin != position; it_begin++)
+			pos++;
+		for ( ; i_end >= pos; i_end--)
+		{
+			(this->alloc).construct(_array + i_end + n, *(_array + i_end));
+			(this->alloc).destroy(this->_array + i_end);
+		}
+		i_end++;
+		for ( ; n2 > 0; n2--, i_end++)
+			(this->alloc).construct(_array + i_end, val);
+	}
+
+	template <class InputIterator>
+    void insert (iterator position, InputIterator first, InputIterator last)
+	{
+		iterator it_begin = this->begin();
+		int i_end = this->_size - 1;
+		int pos	= 0;
+		size_type n, n2;
+	
+		n = n2 = last - first;
+		if (this->_capacity < this->_size + n)
+			this->resize(this->_size + n);
+		else
+			this->_size += n;
+
+		for ( ; it_begin != position; it_begin++)
+			pos++;
+		for ( ; i_end >= pos; i_end--)
+		{
+			(this->alloc).construct(_array + i_end + n, *(_array + i_end));
+			(this->alloc).destroy(this->_array + i_end);
+		}
+		i_end++;
+		for ( ; n2 > 0; n2--, i_end++, first++)
+			(this->alloc).construct(_array + i_end, *first);
+	}
+
 	iterator erase (iterator position)
 	{
 		iterator tmp(position);
@@ -497,6 +515,7 @@ public:
 	iterator erase (iterator first, iterator last)
 	{
 		iterator it_begin = this->begin();
+		iterator it_res;
 		size_type count = last - first;
 		size_type i_first, i_last, res;
 
@@ -508,12 +527,11 @@ public:
 			(this->alloc).destroy(this->_array + i_last);
 		for ( ; i_last != this->_size; i_last++, i_first++)
 		{
-			// here need construct new element and destroy old element
 			(this->alloc).construct(_array + i_first, *(_array + i_last));
 			(this->alloc).destroy(this->_array + i_last);
 		}
 		this->_size -= (last - first);
-		iterator it_res = this->begin() + res;
+		it_res = this->begin() + res;
 		return (it_res);
 	}
 

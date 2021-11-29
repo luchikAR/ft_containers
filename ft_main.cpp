@@ -163,10 +163,24 @@ int main()
 
     for (int i = 1; i <= 10; i++) v_int9.push_back(i);
     std::cout << "ft:: [erase][befor] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
-    v_int9.erase(v_int9.begin() + 5);
+    ft::vector<int>::iterator it_res = v_int9.erase(v_int9.begin() + 5);
+    // std::cout << "res = " << *it_res << std::endl;
     std::cout << "ft:: [erase][after] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
-    v_int9.erase (v_int9.begin(), v_int9.begin() + 3);
+    it_res = v_int9.erase (v_int9.begin(), v_int9.begin() + 3);
+    // std::cout << "res = " << *it_res << std::endl;
     std::cout << "ft:: [erase][after] sz = " << v_int9.size() << " "; ft_cout_vector(v_int9);
+
+    ft::vector<int> myvector (3, 100);
+    ft::vector<int>::iterator it = myvector.begin();
+    it = myvector.insert ( it , 200 );
+    myvector.insert (it, 2, 300);
+    it = myvector.begin();
+    ft::vector<int> anothervector (2, 400);
+    myvector.insert (it + 2, anothervector.begin(), anothervector.end());
+    int myarray [] = { 501,502,503 };
+    myvector.insert (myvector.begin(), myarray, myarray + 3);
+    std::cout << "ft:: [insert] = ";  ft_cout_vector(myvector);
+
 
     std::cout << ansi::reset;
     return 0;
