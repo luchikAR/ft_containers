@@ -44,7 +44,7 @@ int main()
     BlUE
     std::cout << "###### Vector ######\n";
     
-    /*
+    // /*
     {
     std::cout << "-------Constructor-------\n";
     std::vector<int> sv_int1;
@@ -323,7 +323,7 @@ int main()
         if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
     }
     }
-    */
+    // */
     
     BlUE
     std::cout << "###### Stack ######\n";
