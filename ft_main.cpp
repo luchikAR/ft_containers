@@ -1,9 +1,13 @@
 #include <iostream>
-#include <vector>
 #include <memory>
 #include <algorithm>
 
-#include "include/vector.hpp" 
+#include <vector>
+#include <stack>
+#include <deque>
+
+#include "include/vector.hpp"
+#include "include/stack.hpp"
 
 #define GREEN std::cout<<ansi::foreground_green;
 #define YELLOW std::cout << ansi::foreground_yellow;
@@ -39,6 +43,9 @@ int main()
 {
     BlUE
     std::cout << "###### Vector ######\n";
+    
+    /*
+    {
     std::cout << "-------Constructor-------\n";
     std::vector<int> sv_int1;
     std::vector<int> sv_int2(4);
@@ -315,6 +322,93 @@ int main()
         if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
         if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
     }
+    }
+    */
+    
+    BlUE
+    std::cout << "###### Stack ######\n";
+
+    {
+        std::cout << "-------Constructor-------\n";
+        std::deque<int> mydeque (3,100);          // deque with 3 elements
+        std::vector<int> myvector (2,200);        // vector with 2 elements
+        std::stack<int> first;                    // empty stack
+        std::stack<int> second (mydeque);         // stack initialized to copy of deque
+        std::stack<int,std::vector<int> > third;  // empty stack using vector
+        std::stack<int,std::vector<int> > fourth (myvector);
+        GREEN
+        std::cout << "std:: size of first: " << first.size() << '\n';
+        std::cout << "std:: size of second: " << second.size() << '\n';
+        std::cout << "std:: size of third: " << third.size() << '\n';
+        std::cout << "std:: size of fourth: " << fourth.size() << '\n';
+
+        std::deque<int> mydeque_ft (3,100);          // deque with 3 elements
+        ft::vector<int> myvector_ft (2,200);        // vector with 2 elements
+        ft::stack<int> first_ft;                    // empty stack
+        ft::stack<int> second_ft (mydeque);         // stack initialized to copy of deque
+        ft::stack<int, ft::vector<int> > third_ft;  // empty stack using vector
+        ft::stack<int, ft::vector<int> > fourth_ft (myvector_ft);
+        YELLOW
+        std::cout << "ft:: size of first: " << first_ft.size() << '\n';
+        std::cout << "ft:: size of second: " << second_ft.size() << '\n';
+        std::cout << "ft:: size of third: " << third_ft.size() << '\n';
+        std::cout << "ft:: size of fourth: " << fourth_ft.size() << '\n';
+
+        std::cout << "-------Member functions-------\n";
+        GREEN
+        {
+            std::stack<int> mystack;
+            int sum (0);
+            for (int i=1;i<=10;i++) mystack.push(i);
+            while (!mystack.empty()) {
+                sum += mystack.top();
+                mystack.pop();
+            }
+            std::cout << "std:: total sum: " << sum << '\n';
+        }
+        YELLOW
+        {
+            ft::stack<int> mystack;
+            int sum (0);
+            for (int i=1;i<=10;i++) mystack.push(i);
+            while (!mystack.empty()) {
+                sum += mystack.top();
+                mystack.pop();
+            }
+            std::cout << "ft:: total sum: " << sum << '\n';
+        }
+        std::vector<int> mystack1;
+        for (int i=1;i<=10;i++) mystack1.push_back(i);
+        std::vector<int> mystack2;
+        for (int i=1;i<=5;i++) mystack2.push_back(i);
+        GREEN
+        {
+            std::stack<int, std::vector<int> > foo (mystack1);   // three ints with a value of 100
+            std::stack<int, std::vector<int> > bar (mystack2);   // two ints with a value of 200
+
+            if (foo == bar) std::cout << "foo and bar are equal\n";
+            if (foo != bar) std::cout << "foo and bar are not equal\n";
+            if (foo <  bar) std::cout << "foo is less than bar\n";
+            if (foo >  bar) std::cout << "foo is greater than bar\n";
+            if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+            if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
+        }
+        YELLOW
+        {
+            ft::stack<int, std::vector<int> > foo (mystack1);   // three ints with a value of 100
+            ft::stack<int, std::vector<int> > bar (mystack2);   // two ints with a value of 200
+
+            if (foo == bar) std::cout << "foo and bar are equal\n";
+            if (foo != bar) std::cout << "foo and bar are not equal\n";
+            if (foo <  bar) std::cout << "foo is less than bar\n";
+            if (foo >  bar) std::cout << "foo is greater than bar\n";
+            if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+            if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
+        }
+    }
+
+    BlUE
+    std::cout << "###### map ######\n";
 
     std::cout << ansi::reset;
     return 0;

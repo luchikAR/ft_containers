@@ -7,8 +7,6 @@
 #include <iterator>
 #include <algorithm>
 
-#include <iostream>
-
 namespace ft {
 template<typename T>
 class VectorIterator: std::iterator_traits<T*>
