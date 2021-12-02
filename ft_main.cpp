@@ -4,14 +4,23 @@
 
 #include <vector>
 #include <stack>
+#include <map>
 #include <deque>
 
 #include "include/vector.hpp"
 #include "include/stack.hpp"
+#include "include/map.hpp"
 
 #define GREEN std::cout<<ansi::foreground_green;
 #define YELLOW std::cout << ansi::foreground_yellow;
 #define BlUE std::cout << ansi::foreground_blue;
+
+bool fncomp (char lhs, char rhs) {return lhs<rhs;}
+
+struct classcomp {
+  bool operator() (const char& lhs, const char& rhs) const
+  {return lhs<rhs;}
+};
 
 void ft_cout_vector(std::vector<int> x)
 {
@@ -44,7 +53,7 @@ int main()
     BlUE
     std::cout << "###### Vector ######\n";
     
-    // /*
+    /*
     {
     std::cout << "-------Constructor-------\n";
     std::vector<int> sv_int1;
@@ -323,17 +332,17 @@ int main()
         if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
     }
     }
-    // */
+    */
     
     BlUE
     std::cout << "###### Stack ######\n";
-
+    /*
     {
         std::cout << "-------Constructor-------\n";
         std::deque<int> mydeque (3,100);          // deque with 3 elements
         std::vector<int> myvector (2,200);        // vector with 2 elements
         std::stack<int> first;                    // empty stack
-        std::stack<int> second (mydeque);         // stack initialized to copy of deque
+        std::stack<int,std::deque<int> > second (mydeque);         // stack initialized to copy of deque
         std::stack<int,std::vector<int> > third;  // empty stack using vector
         std::stack<int,std::vector<int> > fourth (myvector);
         GREEN
@@ -345,7 +354,7 @@ int main()
         std::deque<int> mydeque_ft (3,100);          // deque with 3 elements
         ft::vector<int> myvector_ft (2,200);        // vector with 2 elements
         ft::stack<int> first_ft;                    // empty stack
-        ft::stack<int> second_ft (mydeque);         // stack initialized to copy of deque
+        ft::stack<int, std::deque<int> > second_ft (mydeque);         // stack initialized to copy of deque
         ft::stack<int, ft::vector<int> > third_ft;  // empty stack using vector
         ft::stack<int, ft::vector<int> > fourth_ft (myvector_ft);
         YELLOW
@@ -406,9 +415,36 @@ int main()
             if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
         }
     }
+    */
 
     BlUE
     std::cout << "###### map ######\n";
+    // /*
+    std::cout << "-------Constructor-------\n";
+    GREEN
+    std::map<char,int> first;
+    first['a']=10;
+    first['b']=30;
+    first['c']=50;
+    first['d']=70;
+    std::map<char,int> second (first.begin(),first.end());
+    std::map<char,int> third (second);
+    std::map<char, int, classcomp> fourth;                 // class as Compare
+    bool(*fn_pt)(char, char) = fncomp;
+    std::map<char, int, bool(*)(char,char) > fifth (fn_pt); // function pointer as Compare
+
+    YELLOW
+    // ft::map<char,int> first_ft;
+    // first_ft['a']=10;
+    // first_ft['b']=30;
+    // first_ft['c']=50;
+    // first_ft['d']=70;
+    // ft::map<char,int> second (first.begin(),first.end());
+    // ft::map<char,int> third (second);
+    // ft::map<char, int, classcomp> fourth;                 // class as Compare
+    // bool(*fn_pt)(char, char) = fncomp;
+    // ft::map<char, int, bool(*)(char,char) > fifth (fn_pt); // function pointer as Compare
+    // */
 
     std::cout << ansi::reset;
     return 0;

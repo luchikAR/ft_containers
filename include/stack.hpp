@@ -5,11 +5,11 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <iterator>
-#include <deque>
+#include "vector.hpp"
 
 namespace ft {
 
-template <class T, class Container = std::deque<T> >
+template <class T, class Container = ft::vector<T> >
 class stack
 {
 public:
@@ -25,10 +25,10 @@ protected:
 public:
     //-----------------------Constructor-----------------------//
     explicit stack (const container_type& ctnr = container_type()): c(ctnr) {}
-	stack(stack const &other): c(other.c) {}
+	stack(stack const &x): c(x.c) {}
 	virtual ~stack() {}
-	stack &operator=(stack const &other) {
-		this->c = other.c;
+	stack &operator=(stack const &x) {
+		this->c = x.c;
 		return (*this);
 	}
     //-----------------------Member functions-----------------------//

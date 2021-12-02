@@ -2,8 +2,8 @@
 Реализация std::vector, std::map, std::stack C++98
 
 ## Actual Status: 
-* ft::vector: Закончен.
-* ft::stack: Закончен.
+* ft::vector: Закончен. - need test (Разные типы данных)
+* ft::stack: Закончен.  - need test (Разные типы данных)
 * ft::map: Не закончен.
 
 ## Как запустить:
