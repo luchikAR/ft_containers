@@ -189,7 +189,7 @@ public:
     typedef std::allocator<allocator_type>    		__alloc;
     typedef value_type&                            	reference;
     typedef const value_type&                      	const_reference;
-	typedef unsigned long 							size_type;
+	typedef unsigned long							size_type;
     typedef typename __alloc::difference_type 		difference_type;
     typedef typename __alloc::pointer         		pointer;
     typedef typename __alloc::const_pointer   		const_pointer;

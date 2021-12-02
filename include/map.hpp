@@ -6,25 +6,34 @@
 #include <stdexcept>    // std::exeption
 #include <iterator>     // std::iterator
 
-#include <utility>      // std::make_pair
 #include <functional>   // std::less
+// #include <utility>   // std::pair  std::make_pair
+#include "pair.hpp"     // ft::pair  ft::make_pair
 
 namespace ft {
 template < class Key,                                           // map::key_type
            class T,                                             // map::mapped_type
            class Compare = std::less<Key>,                          // map::key_compare
-           class Alloc = std::allocator<std::pair<const Key,T> >    // map::allocator_type
+           class Alloc = std::allocator<ft::pair<const Key,T> >    // map::allocator_type
            > 
 class map
 {
 public:
+    struct Node {
+        bool red;
+        Node* parent;
+        Node* left;
+        Node* right;
+        ft::pair<const Key, T> *pair;
+    };
 
 	//-----------------------Typedef-----------------------//
     typedef Key                                      key_type;
     typedef T                                        mapped_type;
-    typedef std::pair<const key_type, mapped_type>   value_type;
+    typedef ft::pair<const key_type, mapped_type>    value_type;
     typedef Compare                                  key_compare;
     typedef Alloc                                    allocator_type;
+    typedef std::allocator<Node>                     AllocNode;
     typedef typename allocator_type::reference       reference;
     typedef typename allocator_type::const_reference const_reference;
     typedef typename allocator_type::pointer         pointer;
@@ -37,32 +46,25 @@ public:
     // typedef std::reverse_iterator<iterator>          reverse_iterator;
     // typedef std::reverse_iterator<const_iterator>    const_reverse_iterator;
 	
-    struct Node {
-        bool red;
-        Node* parent;
-        Node* left;
-        Node* right;
-        std::pair<const Key, T> pair;
-    };
-    
     //-----------------------Param-----------------------//
 private:
     Node *p;
     Alloc alloc;
+    AllocNode allocNode;
     key_compare _compare;
 	//-----------------------Constructor-----------------------//
 public:
     explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
         _compare(comp)
     {
-        // p = (this->alloc).allocate(sizeof(Node));
+        const value_type& val = ft::pair<const Key, T>(Key(), T());
+        p = allocNode.allocate(1);
+        (this->alloc).construct(p->pair, val);
         (void)alloc;
-        (void)comp;
-        p->parent = p;
-        p->right = (nullptr);
-        p->left = (nullptr);
-        p->red = (0);
-        // p->pair = std::make_pair( 0, 0);
+        // p->parent = p;
+        // p->right = (nullptr);
+        // p->left = (nullptr);
+        // p->red = (0);
     }
     template <class InputIterator>
     map (InputIterator first, InputIterator last,
