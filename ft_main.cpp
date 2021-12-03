@@ -446,9 +446,13 @@ int main()
         std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
         std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
     }
+    
     std::cout << "-------Constructor-------\n";
     GREEN
     std::map<char,int> first;
+    std::cout << "empty lement?" << std::endl;
+    for (std::map<char,int>::iterator it = first.begin(); it != first.end(); it++)
+        std::cout << "[key]= " << it->first << " [value]= " << it->second << std::endl; 
     first['a']=10;
     first['b']=30;
     first['c']=50;
@@ -460,13 +464,13 @@ int main()
     std::map<char, int, bool(*)(char,char) > fifth (fn_pt); // function pointer as Compare
 
     YELLOW
-    // ft::map<char,int> first_ft;
+    ft::map<char,int> first_ft;
     // first_ft['a']=10;
     // first_ft['b']=30;
     // first_ft['c']=50;
     // first_ft['d']=70;
-    // ft::map<char,int> second (first.begin(),first.end());
-    // ft::map<char,int> third (second);
+    // ft::map<char,int> second_ft (first_ft.begin(),first_ft.end());
+    // ft::map<char,int> third (second_ft);
     // ft::map<char, int, classcomp> fourth;                 // class as Compare
     // bool(*fn_pt)(char, char) = fncomp;
     // ft::map<char, int, bool(*)(char,char) > fifth (fn_pt); // function pointer as Compare

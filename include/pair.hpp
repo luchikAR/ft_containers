@@ -15,22 +15,14 @@ public:
     T2 second;
     //-----------------------Constructor-----------------------//
 public:
-    pair()
-    {
-        first = first_type();
-        second = second_type();
-    }
-    template<class U, class V>
-        pair (const pair<U,V>& pr)
-        {
-            this->first = pr.first;
-            this->second = pr.second;
-        }
+    pair(): first(), second() { }
     pair (const first_type& a, const second_type& b)
-    {
-        this->first = a;
-        this->second = b;
-    }
+    : first(a), second(b) { }
+
+    template<class U, class V>
+      pair (const pair<U,V>& pr):
+      first(pr.first), second(pr.second) { }
+
     pair& operator= (const pair& pr)
     {
         this->first = pr.first;
