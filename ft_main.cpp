@@ -49,11 +49,23 @@ void ft_cout_vector(ft::vector<int> x)
     std::cout << " }" << std::endl;
 }
 
+void ft_cout_map(std::map<char,int> x)
+{
+    for (std::map<char,int>::iterator it = x.begin(); it != x.end(); it++)
+        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
+}
+
+void ft_cout_map(ft::map<char,int> x)
+{
+    for (ft::map<char,int>::iterator it = x.begin(); it != x.end(); it++)
+        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
+}
+
 int main()
 {
     BlUE
     std::cout << "###### Vector ######\n";
-    
+
     /*
     {
     std::cout << "-------Constructor-------\n";
@@ -450,13 +462,18 @@ int main()
     std::cout << "-------Constructor-------\n";
     GREEN
     std::map<char,int> first;
-    std::cout << "empty lement?" << std::endl;
-    for (std::map<char,int>::iterator it = first.begin(); it != first.end(); it++)
-        std::cout << "[key]= " << it->first << " [value]= " << it->second << std::endl; 
+    std::cout << "empty std::map :" << std::endl; ft_cout_map(first);
     first['a']=10;
-    first['b']=30;
-    first['c']=50;
-    first['d']=70;
+    // first['b']=30;
+    // first['x'] = 11;
+    // first['p'] = 12;
+    // first['y'] = 1;
+    // first['c']=50;
+    // first['d']=70;
+    // first['e'];
+    // first['g'] = 60;
+    // first['z'] = 80;
+    std::cout << "No empty std::map :" << std::endl; ft_cout_map(first);
     std::map<char,int> second (first.begin(),first.end());
     std::map<char,int> third (second);
     std::map<char, int, classcomp> fourth;                 // class as Compare
@@ -465,10 +482,22 @@ int main()
 
     YELLOW
     ft::map<char,int> first_ft;
-    // first_ft['a']=10;
-    // first_ft['b']=30;
+    std::cout << "empty ft::map :" << std::endl; // ft_cout_map(first_ft);
+    for (ft::map<char,int>::iterator it = first_ft.begin(); it != first_ft.end(); it++)
+        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
+    first_ft['a']=10;
+    first_ft['b']=30;
+    // first_ft['x'] = 11;
+    // first_ft['p'] = 12;
+    // first_ft['y'] = 1;
     // first_ft['c']=50;
     // first_ft['d']=70;
+    // first_ft['e'];
+    // first_ft['g'] = 60;
+    // first_ft['z'] = 80;
+    std::cout << "No empty ft::map :" << std::endl; // ft_cout_map(first);
+    for (ft::map<char,int>::iterator it = first_ft.begin(); it != first_ft.end(); it++)
+        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
     // ft::map<char,int> second_ft (first_ft.begin(),first_ft.end());
     // ft::map<char,int> third (second_ft);
     // ft::map<char, int, classcomp> fourth;                 // class as Compare

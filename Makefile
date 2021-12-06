@@ -10,7 +10,7 @@ OBJS     = $(SRCS_FT:.cpp=.o)
 OBJS_STD = $(SRCS_STD:.cpp=.o)
 
 CXX      = clang++
-CXXFLAGS = -std=c++98 -Wall -Werror -Wextra
+CXXFLAGS = -g -std=c++98 -Wall -Werror -Wextra
 
 # ft_main - test ft::vector<int>
 all: $(NAME)
