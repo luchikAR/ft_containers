@@ -9,12 +9,16 @@
 
 namespace ft {
 
-template <class T, class Compare = std::less<T>,
-                class Alloc = std::allocator<T> >
+template < class Key,                                           // map::key_type
+           class T,                                             // map::mapped_type
+           class Compare = std::less<T>,
+           class Alloc = std::allocator<T> >
 class rbtree
 {
 public:
-    typedef     T                                           value_type;        
+    typedef     Key                                                     key_type;
+    typedef     T                                                       mapped_type;
+    typedef     ft::pair<const key_type, mapped_type>                   value_type;     
     typedef     Compare                                     value_compare;
     typedef     Alloc                                       allocator_type;
     typedef     typename allocator_type::reference          reference;
@@ -265,7 +269,7 @@ private:
     node_pointer copy_node(node_pointer other)
     {
         node_pointer new_node = _node_alloc.allocate(1);
-        _node_alloc.construct(new_node, Node<T>());
+        _node_alloc.construct(new_node, Node<value_type>());
         new_node->is_red = other->is_red;
         new_node->is_nil = other->is_nil;
         if(other->value)
@@ -609,25 +613,33 @@ public:
         return(this->_compare);
     }
     //------------------------------Operations-------------------------------//
-    iterator find (const value_type& k)
+    iterator find (const key_type& k)
     {
-        node_pointer find_ret = search(k, _node);
-        return(find_ret == NULL ? end() : iterator(find_ret));
+		iterator it = this->begin();
+		while (it != this->end() && it->first != k)
+			it++;
+		return (it);
+        // node_pointer find_ret = search(k, _node);
+        // return(find_ret == NULL ? end() : iterator(find_ret));
     }
-    const_iterator find (const value_type& k) const
+    const_iterator find (const key_type& k) const
     {
-        node_pointer find_ret = search(k, _node);
-        return(find_ret == NULL ? end() : const_iterator(find_ret));
+		iterator it = this->begin();
+		while (it != this->end() && it->first != k)
+			it++;
+		return (it);
+        // node_pointer find_ret = search(k, _node);
+        // return(find_ret == NULL ? end() : const_iterator(find_ret));
     }
     
-    size_type count (const value_type& k) const
+    size_type count (const key_type& k) const
     {
         if(find(k) != end())
             return 1;
         return 0;
     }
 
-    iterator lower_bound (const value_type& k)
+    iterator lower_bound (const key_type& k)
     {
         iterator last = end();
         for(iterator first = begin(); first != last; first++)

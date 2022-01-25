@@ -34,7 +34,7 @@ public:
     typedef     typename allocator_type::pointer                        pointer;
     typedef     typename allocator_type::const_pointer                  const_pointer;
 
-    typedef     ft::rbtree<value_type, key_compare, allocator_type>     tree_type;
+    typedef     ft::rbtree<Key, T, key_compare, allocator_type>         tree_type;
     typedef     typename tree_type::iterator                            iterator;
     typedef     typename tree_type::const_iterator                      const_iterator;
     typedef     typename tree_type::reverse_iterator                    reverse_iterator;
@@ -85,7 +85,7 @@ public:
 	//---------------------Element access---------------------//
     mapped_type& operator[] (const key_type& k)
     {
-		iterator it = this->_tree.find(k);
+		iterator it = _tree.find(k);
 		if (it != this->end())
 			return (it->second);
 		else
