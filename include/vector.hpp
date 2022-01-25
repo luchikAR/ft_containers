@@ -9,7 +9,7 @@
 
 namespace ft {
 template<typename T>
-class VectorIterator: std::iterator_traits<T*>
+class VectorIterator: std::iterator_traits<T*>  // сделать ft:: 
 {
 	//-----------------------Typedef-----------------------//
 public:

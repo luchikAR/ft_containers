@@ -3,7 +3,7 @@ NAME     = ft_containers
 SRCS_FT		= ft_main.cpp
 SRCS_STD	= speed_test_vector.cpp
 
-hpp		=  include/vector.hpp include/stack.hpp include/map.hpp
+hpp		=  include/vector.hpp include/stack.hpp include/map.hpp include/RBTree.hpp include/IteratorTraits.hpp include/TreeIterator.hpp
 
 OBJS     = $(SRCS_FT:.cpp=.o)
 

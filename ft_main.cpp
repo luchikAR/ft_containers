@@ -11,6 +11,7 @@
 #include "include/stack.hpp"
 #include "include/map.hpp"
 #include "include/pair.hpp"
+#include "include/RBTree.hpp"
 
 #define GREEN std::cout<<ansi::foreground_green;
 #define YELLOW std::cout << ansi::foreground_yellow;
@@ -432,7 +433,7 @@ int main()
 
     BlUE
     std::cout << "###### map ######\n";
-    // /*
+    /*
     std::cout << "-------ft:pair-------\n";
     GREEN
     {
@@ -458,7 +459,8 @@ int main()
         std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
         std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
     }
-    
+    */
+//    /*
     std::cout << "-------Constructor-------\n";
     GREEN
     std::map<char,int> first;
@@ -484,9 +486,9 @@ int main()
     ft::map<char,int> first_ft;
     std::cout << "empty ft::map :" << std::endl; // ft_cout_map(first_ft);
     for (ft::map<char,int>::iterator it = first_ft.begin(); it != first_ft.end(); it++)
-        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
+        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl;
     first_ft['a']=10;
-    first_ft['b']=30;
+    // first_ft['b']=30;
     // first_ft['x'] = 11;
     // first_ft['p'] = 12;
     // first_ft['y'] = 1;
@@ -495,9 +497,9 @@ int main()
     // first_ft['e'];
     // first_ft['g'] = 60;
     // first_ft['z'] = 80;
-    std::cout << "No empty ft::map :" << std::endl; // ft_cout_map(first);
-    for (ft::map<char,int>::iterator it = first_ft.begin(); it != first_ft.end(); it++)
-        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
+    // std::cout << "No empty ft::map :" << std::endl; // ft_cout_map(first);
+    // for (ft::map<char,int>::iterator it = first_ft.begin(); it != first_ft.end(); it++)
+    //     std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
     // ft::map<char,int> second_ft (first_ft.begin(),first_ft.end());
     // ft::map<char,int> third (second_ft);
     // ft::map<char, int, classcomp> fourth;                 // class as Compare
