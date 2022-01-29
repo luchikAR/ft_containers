@@ -89,7 +89,7 @@ public:
 		if (it != this->end())
 			return (it->second);
 		else
-			return (*((this->_tree.insert(ft::make_pair(k, mapped_type()))).first)).second;
+			return (*((this->_tree.insert(ft::make_pair(k, mapped_type() ))).first)).second;
     }
 	// //-----------------------Modifiers-----------------------//
     // pair<iterator,bool> insert (const value_type& val)

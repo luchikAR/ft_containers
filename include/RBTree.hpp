@@ -11,8 +11,8 @@ namespace ft {
 
 template < class Key,                                           // map::key_type
            class T,                                             // map::mapped_type
-           class Compare = std::less<T>,
-           class Alloc = std::allocator<T> >
+           class Compare = std::less<Key>,
+           class Alloc = std::allocator<ft::pair<const Key,T> > >
 class rbtree
 {
 public:
@@ -44,6 +44,13 @@ private:
     node_pointer    _node;
     value_compare   _compare;
     size_type       _size;
+
+    node_pointer _tree_hight_par(node_pointer x) const
+    {
+        while(!x->is_nil && !x->parent->is_nil)
+            x = x->parent;
+        return x;
+    }
 
     node_pointer _tree_min(node_pointer x) const
     {
@@ -107,7 +114,7 @@ private:
 
     node_pointer _insert_to_node(node_pointer node, node_pointer new_node)
     {
-        if (_compare(*node->value, *new_node->value)) // return x<y;
+        if (_compare(node->value->first, new_node->value->first)) // return x<y;
         {
             if(!node->right->is_nil)
                 return (_insert_to_node(node->right, new_node));
@@ -125,55 +132,56 @@ private:
 
     void rb_insert_fixup(node_pointer node)
     {
-        while(node->parent->is_red)
-        {
-            if(node->parent == node->parent->parent->left)
+        if (node != _node && node->parent != _node)
+            while(node != _node && node->parent->is_red) // was while(node->parent->is_red)
             {
-                node_pointer y = node->parent->parent->right;
-                if(y->is_red)
+                if(node->parent == node->parent->parent->left)
                 {
-                    node->parent->is_red = false;
-                    y->is_red = false;
-                    node->parent->parent->is_red = true;
-                    node = node->parent->parent;
+                    node_pointer y = node->parent->parent->right;
+                    if(y->is_red)
+                    {
+                        node->parent->is_red = false;
+                        y->is_red = false;
+                        node->parent->parent->is_red = true;
+                        node = node->parent->parent;
 
+                    }
+                    else
+                    {
+                        if(node == node->parent->right)
+                        {
+                            node = node->parent;
+                            _left_rotate(node);
+                        }
+                        node->parent->is_red = false;
+                        node->parent->parent->is_red = true;
+                        _right_rotate(node->parent->parent);
+                    }
                 }
                 else
                 {
-                    if(node == node->parent->right)
+                    node_pointer y = node->parent->parent->left;
+                    if(y->is_red)
                     {
-                        node = node->parent;
-                        _left_rotate(node);
+                        node->parent->is_red = false;
+                        y->is_red = false;
+                        node->parent->parent->is_red = true;
+                        node = node->parent->parent;
                     }
-                    node->parent->is_red = false;
-                    node->parent->parent->is_red = true;
-                    _right_rotate(node->parent->parent);
-                }
-            }
-            else
-            {
-                node_pointer y = node->parent->parent->left;
-                if(y->is_red)
-                {
-                    node->parent->is_red = false;
-                    y->is_red = false;
-                    node->parent->parent->is_red = true;
-                    node = node->parent->parent;
-                }
-                else
-                {
-                    if(node == node->parent->left)
+                    else
                     {
-                        node = node->parent;
-                        _right_rotate(node);
+                        if(node == node->parent->left)
+                        {
+                            node = node->parent;
+                            _right_rotate(node);
+                        }
+                        node->parent->is_red = false;
+                        node->parent->parent->is_red = true;
+                        _left_rotate(node->parent->parent);
                     }
-                    node->parent->is_red = false;
-                    node->parent->parent->is_red = true;
-                    _left_rotate(node->parent->parent);
                 }
-            }
 
-        }
+            }
         _node->is_red = false;
     }
 
@@ -311,9 +319,9 @@ private:
     {
         if(!node || node->is_nil)
             return NULL;
-        if(_compare(value, *node->value))
+        if(_compare(value.first, node->value->first))
             return search(value, node->left);
-        if(_compare(*node->value, value))
+        if(_compare(node->value->first, value.first))
             return search(value, node->right);
         return node;
     }
@@ -348,8 +356,6 @@ private:
         _node_alloc.deallocate(node, 1); 
     }
 
-
-
 public:
     //-----------------------------Constructor-------------------------------//
 
@@ -376,8 +382,9 @@ public:
     }
 
     //  когда сюда попадём? Зачем конструктор нужен?
-    // template<class InputIterator>
-    // rbtree(typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >)
+    template<class InputIterator>
+    rbtree(typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >)
+    { }
 
     rbtree& operator=(const rbtree &src)
     {
@@ -410,19 +417,23 @@ public:
         _node_alloc.deallocate(_root, 1);
     }
     //------------------------------Iterators--------------------------------//
-    iterator begin(){
-        return( iterator(_root) );
+    iterator begin() {
+        // return( iterator(_root) );
+        iterator it = _tree_min(_root);
+        std::cout << "parent: " << it->first << "\n";
+        return (_tree_hight_par(_root) );
     }
 
-    const_iterator begin() const{
+    const_iterator begin() const {
         return(const_iterator(_root));
     }
 
-    iterator end(){
-        return(iterator(_tree_min(_root)));
+    iterator end() {
+        return( iterator(_root) );
+        // return(iterator(_tree_min(_root)));
     }
     
-    const_iterator end() const{
+    const_iterator end() const {
         return(const_iterator(_tree_min(_root)));
     }
     reverse_iterator rbegin()
@@ -470,9 +481,9 @@ public:
         ft::pair<iterator, bool> ret(iterator(new_node), true);
         rb_insert_fixup(new_node);
         _size++;
-        // new_node = _tree_max(_node);
-        // new_node->right = _root;
-        // _root->parent = new_node;
+        new_node = _tree_max(_node);
+        new_node->right = _root;
+        _root->parent = new_node;
         return ret;
     }
 
@@ -503,9 +514,9 @@ public:
             _rb_insert(new_node, _node);
         rb_insert_fixup(new_node);
         _size++;
-        // node_pointer max_of_tree = _tree_max(_root);
-        // max_of_tree->right = _root;
-        // _root->parent = max_of_tree;
+        node_pointer max_of_tree = _tree_max(_root);
+        max_of_tree->right = _root;
+        _root->parent = max_of_tree;
         return iterator(new_node);
     }
 
@@ -515,7 +526,6 @@ public:
         for(; first != last; ++first)
             insert(*first);
     }
-
 
     void erase (iterator position) // возможно подправить
 	{
