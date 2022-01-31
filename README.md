@@ -2,9 +2,9 @@
 Реализация std::vector, std::map, std::stack C++98
 
 ## Актуальный Статус: 
-* ft::vector: Закончен. - need test (Разные типы данных)
-* ft::stack: Закончен.  - need test (Разные типы данных)
-* ft::map: Не закончен.
+* ft::vector: Закончен.
+* ft::stack: Закончен.
+* ft::map: Закончен.
 
 ## Как запустить:
 * make - запустит ft_main.cpp со сравнительными тестами ft и std контейнера
@@ -15,6 +15,7 @@
 * ft::make_pair
 * ft::lexicographical_compare
 * ft::reverse_iterator
+* ft::iterator
 ---------
 * std::allocator
 * std::iterator

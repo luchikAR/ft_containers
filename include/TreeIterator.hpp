@@ -4,209 +4,172 @@
 #include <iterator>
 #include "IteratorTraits.hpp"
 
-namespace ft{
+template<class Value>
+struct Node{
+	//typedef Node*			pointer;
+	public:
+	explicit Node(Value *srcval = 0) :	value(srcval),
+										parent(0),
+										left(0),
+										right(0),
+										is_black(false),
+										is_nil(0){}
+	
+	Value	*value;
+	Node*	parent;
+	Node*	left;
+	Node*	right;	
+	bool	is_black;
+	bool	is_nil;
 
-template<class T>
-struct Node
-{
-    typedef T       value_type;
+	Node( Node const & other) {
+		this->is_black = other.is_black;
+		this->value = other.value;
+		this->parent = other.parent;
+		this->is_nil = other.is_nil;
+		this->right = other.right;
+		this->left = other.left;
+	};
 
-    T       *value;     //значение -  ft::pair
-    Node    *parent;    //родители узла
-    Node    *left;      //значение левого узла меньше текущего
-    Node    *right;     //значение правого узла больше текущего
-    bool    is_red;     //true - Если узел красный, в противном случае от черный О_о
-    bool    is_nil;     //true - Если не существует дочернего или родительского узла, по отношению к данному
-
-    Node()
-    {
-        this->value = NULL;
-        this->parent = 0;
-        this->left = 0;
-        this->right = 0;
-        this->is_red = false;
-        this->is_nil = true;
-    }
-
-    Node(T *val)
-    {
-        this->value = val;
-        this->parent = 0;
-        this->left = 0;
-        this->right = 0;
-        this->is_red = true;
-        this->is_nil = false; 
-    }
-    
-    Node(Node const &other)
-    {
-        this->value = other.value;
-        this->parent = other.parent;
-        this->left = other.left;
-        this->right = other.right;
-        this->is_red = other.is_red;
-        this->is_nil = other.is_nil;
-    }
-
-    Node &operator=(Node const &other)
-    {
-        this->value = other.value;
-        this->parent = other.parent;
-        this->left = other.left;
-        this->right = other.right;
-        this->is_red = other.is_red;
-        this->is_nil = other.is_nil;
-        return(this);  // virtual was here
-    }
-
-    virtual ~Node(){}
+	Node& operator=(const Node& other){
+		this->is_black = other.is_black;
+		this->value = other.value;
+		this->is_nil = other.is_nil;
+		this->parent = other.parent;
+		this->right = other.right;
+		this->left = other.left;
+		return *this;
+	}	
+	virtual ~Node(){}
 };
 
+template<typename T>
+class TreeIter {
+	public:
+		typedef std::bidirectional_iterator_tag iterator_category;
+		typedef typename ft::iterator_traits<T*>::value_type 		value_type;
+		typedef typename ft::iterator_traits<T*>::reference 		reference;
+		typedef typename ft::iterator_traits<T*>::pointer			pointer;
+		typedef typename ft::iterator_traits<T*>::difference_type	difference_type;
+		typedef Node<typename ft::remove_const<value_type>::type >* node_pointer;
 
-template<class T>
-class TreeIterator : public std::iterator<std::random_access_iterator_tag, T>
-{
-public:
- // забить здесь самому значения
-    // typedef typename ft::iterator_traits<T>::difference_type  difference_type;
-    typedef typename ft::iterator_traits<T>::value_type       value_type;
-    typedef typename ft::iterator_traits<T>::pointer          pointer;
-    typedef typename ft::iterator_traits<T>::reference        reference;
-    typedef typename ft::Node<value_type>*                   node_p;
-private:
-    node_p _node;
+		//typedef Node<T>* node_pointer;
 
-    node_p tree_min(node_p x) const // стр 324 Кормен
-    {
-        while(!x->left->is_nil)
-            x = x->left;
-        return x;
-    }
+	private:
+		node_pointer _node;
 
-    node_p tree_max(node_p x) const
-    {
-        while(!x->right->is_nil)
-            x = x->right;
-        return x;
-    }
+		node_pointer tree_min(node_pointer n) const {
+			while(n->left != NULL && !n->left->is_nil)
+				n = n->left;
+			return n;
+		}
 
-public:
-    TreeIterator() {}
+		node_pointer tree_max(node_pointer n) const {
+			while (!n->right->is_nil)
+				n = n->right;
+			return n;
+		}
 
-    TreeIterator(node_p _node)
-    {
-        this->_node = _node;
-    }
-    
-    TreeIterator(TreeIterator<value_type> const &other)
-    {
-        *this = other;
-    }
+	public:
+		TreeIter() {}
 
-    TreeIterator &operator=(TreeIterator<value_type> const &other)
-    {
-        this->_node = other._node;
-        return *this;
-    }
+		TreeIter(void *node): _node(static_cast<node_pointer>(node)) {}
 
+		TreeIter(const TreeIter<typename ft::remove_const<value_type>::type > & other)//: _node(other.node()) {}
+		{
+			*this = other;
+		}
 
-    reference operator*(){
-        return(*this->_node->value);
-    }
+		TreeIter& operator=(const TreeIter<typename ft::remove_const<value_type>::type>& other) {
+			this->_node = other.node();
+			return *this;
+		}
 
-    pointer operator->(){
-        return(this->_node->value);
-    }
+		reference operator*() const {
+			return *(_node->value);
+		}
 
-    TreeIterator &operator++(){
-        
-        if(!_node->right->is_nil)
-            _node = tree_min(_node->right);
-        else
-        {
-            node_p y = _node->parent;
-            while(!y->is_nil && _node == y->right)
-            {
-                _node = y;
-                y = y->parent;
-            }
-            _node = y;
-        }
-        return *this;
-    }
+		pointer operator->() const {
+			return _node->value;
+		}
 
-    TreeIterator operator++(int){
-        TreeIterator<value_type> tmp = *this;
-        if(!_node->right->is_nil)
-            _node = tree_min(_node->right);
-        else
-        {
-            node_p y = _node->parent;
-            while(!y->is_nil && _node == y->right)
-            {
-                _node = y;
-                y = y->parent;
-            }
-            _node = y;
-        }
-        return tmp;
+		TreeIter& operator++() {
+			if (_node->right && !_node->right->is_nil) {
+				_node = tree_min(_node->right);
+			}
+			else {
+				node_pointer y = _node->parent;
+				while (y != NULL && _node == y->right) {
+					_node = y;
+					y = y->parent;
+				}
+				_node = y;
+			}
+			return *this;
+		}
 
-    }
+		TreeIter operator++(int) {
+			TreeIter<value_type> temp = *this;
+			if (!_node->right->is_nil) {
+				_node = tree_min(_node->right);
+			}
+			else {
+				node_pointer y = _node->parent;
+				while (y != NULL && _node == y->right) {
+					_node = y;
+					y = y->parent;
+				}
+				_node = y;
+			}
+			return temp;
+		}
 
-    TreeIterator &operator--(){
-        if(!_node->left->is_nil)
-            _node = tree_max(_node->left);
-        else
-        {
-            node_p y = _node->parent;
-            while(!y->is_nil && _node == y->left)
-            {
-                _node = y;
-                y = y->parent;
-            }
-            _node = y;
-        }
-        return *this;
-    }
+		TreeIter& operator--() {
+			if (_node->left && !_node->left->is_nil) {
+				_node = tree_max(_node->left);
+			}
+			else {
+				node_pointer y = _node->parent;
+				while (y != NULL && _node == y->left) {
+					_node = y;
+					y = y->parent;
+				}
+				_node = y;
+			}
+			return *this;
+		}
 
-    TreeIterator operator--(int){
-        TreeIterator<value_type> tmp = *this;
-        if(!_node->left->is_nil)
-            _node = tree_max(_node->left);
-        else
-        {
-            node_p y = _node->parent;
-            while(!y->is_nil && _node == y->left)
-            {
-                _node = y;
-                y = y->parent;
-            }
-            _node = y;
-        }
-        return tmp;
-    }
+		TreeIter operator--(int) {
+			TreeIter<value_type> temp = *this;
+			if (_node->left && !_node->left->is_nil) {
+				_node = tree_max(_node->left);
+			}
+			else {
+				node_pointer y = _node->parent;
+				while (y != NULL && _node == y->left) {
+					_node = y;
+					y = y->parent;
+				}
+				_node = y;
+			}
+			return temp;
+		}
 
-    node_p getNode() const
-    {
-        return _node;
-    }
-
-};
+		node_pointer node() const {
+			return _node;
+		}
+	};	
 
 template<typename A, typename B>
-bool operator==(const TreeIterator<A> &lhs, const TreeIterator<B> &rhs)
-{
-    return  lhs.getNode() == rhs.getNode();
-}
+bool operator==(const TreeIter<A> & lhs, const TreeIter<B> & rhs){
+		return (lhs.node() == rhs.node());
+	}
 
 template<typename A, typename B>
-bool operator!=(const TreeIterator<A> &lhs, const TreeIterator<B> &rhs)
-{
-    return  lhs.getNode() != rhs.getNode();
-}
+bool operator!=(const TreeIter<A> & lhs, const TreeIter<B> & rhs){
+		return (lhs.node() != rhs.node());
+	}
 
-
-}
 
 /* 
    1)Корень дерева всегда черный

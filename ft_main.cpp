@@ -465,46 +465,42 @@ int main()
     GREEN
     std::map<char,int> first;
     std::cout << "empty std::map :" << std::endl; ft_cout_map(first);
-    first['a']=10;
-    // first['b']=30;
-    // first['x'] = 11;
-    // first['p'] = 12;
-    // first['y'] = 1;
-    // first['c']=50;
-    // first['d']=70;
-    // first['e'];
-    // first['g'] = 60;
-    // first['z'] = 80;
+    first['a'] = 10;
+    first['b'] = 30;
+    first['e'];
     std::cout << "No empty std::map :" << std::endl; ft_cout_map(first);
-    // std::map<char,int> second (first.begin(),first.end());
-    // std::map<char,int> third (second);
-    // std::map<char, int, classcomp> fourth;                 // class as Compare
-    // bool(*fn_pt)(char, char) = fncomp;
-    // std::map<char, int, bool(*)(char,char) > fifth (fn_pt); // function pointer as Compare
+    std::map<char,int> second (first.begin(),first.end());
+    std::map<char,int> third (second);
+    std::map<char, int, classcomp> fourth;                 // class as Compare
+    bool(*fn_pt)(char, char) = fncomp;
+    std::map<char, int, bool(*)(char,char) > fifth (fn_pt); // function pointer as Compare
 
     YELLOW
     ft::map<char,int> first_ft;
-    std::cout << "empty ft::map :" << std::endl; // ft_cout_map(first_ft);
-    for (ft::map<char,int>::iterator it = first_ft.begin(); it != first_ft.end(); it++)
-        std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl;
-    first_ft['a']=10;
-    first_ft['b']=30;
-    // first_ft['x'] = 11;
-    // first_ft['p'] = 12;
-    // first_ft['y'] = 1;
-    // first_ft['c']=50;
-    // first_ft['d']=70;
-    // first_ft['e'];
-    // first_ft['g'] = 60;
-    // first_ft['z'] = 80;
-    std::cout << "No empty ft::map :" << std::endl; // ft_cout_map(first);
-    for (ft::map<char,int>::iterator it = first_ft.begin(); it != first_ft.end(); it++)
+    std::cout << "empty ft::map :" << std::endl;  ft_cout_map(first_ft);
+    first_ft['a'] = 10;
+    first_ft['b'] = 30;
+    first_ft['e'];
+    std::cout << "No empty ft::map :" << std::endl;  ft_cout_map(first);
+    ft::map<char,int>   second_ft (first_ft.begin(),first_ft.end());
+    ft::map<char,int>   third_ft (second_ft);
+    ft::map<char, int, classcomp> fourth_ft;                 // class as Compare
+    bool(*fn_pt_ft)(char, char) = fncomp;
+    ft::map<char, int, bool(*)(char,char) > fifthf (fn_pt_ft); // function pointer as Compare
+
+    std::cout << "-------Iterators-------\n";
+    GREEN
+    std::cout << "std::map  revers :" << std::endl;
+    for (std::map<char,int>::reverse_iterator it = first.rbegin(); it != first.rend(); it++)
+         std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
+
+    YELLOW
+    std::cout << "ft::map  revers :" << std::endl;
+    for (ft::map<char,int>::reverse_iterator it = first_ft.rbegin(); it != first_ft.rend(); it++)
         std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
-    // ft::map<char,int> second_ft (first_ft.begin(),first_ft.end());
-    // ft::map<char,int> third (second_ft);
-    // ft::map<char, int, classcomp> fourth;                 // class as Compare
-    // bool(*fn_pt)(char, char) = fncomp;
-    // ft::map<char, int, bool(*)(char,char) > fifth (fn_pt); // function pointer as Compare
+
+    std::cout << "-------Capacity-------\n";
+
     // */
 
     std::cout << ansi::reset;
