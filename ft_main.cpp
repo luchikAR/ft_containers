@@ -12,10 +12,13 @@
 #include "include/map.hpp"
 #include "include/pair.hpp"
 #include "include/RBTree.hpp"
+#include "include/set.hpp"
 
 #define GREEN std::cout<<ansi::foreground_green;
 #define YELLOW std::cout << ansi::foreground_yellow;
 #define BlUE std::cout << ansi::foreground_blue;
+
+bool fncomp (int lhs, int rhs) {return lhs<rhs;}
 
 bool fncomp (char lhs, char rhs) {return lhs<rhs;}
 
@@ -433,7 +436,8 @@ int main()
 
     BlUE
     std::cout << "###### map ######\n";
-    // /*
+
+    /*
     std::cout << "-------ft:pair-------\n";
     GREEN
     {
@@ -459,10 +463,7 @@ int main()
         std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
         std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
     }
-    // */
 
-
-//    /*
     BlUE std::cout << "-------Constructor-------\n";
     GREEN
     std::map<char,int> first;
@@ -714,8 +715,29 @@ int main()
         std::cout << "upper bound points to: ";
         std::cout << ret.second->first << " => " << ret.second->second << '\n';
     }
+    */
 
-    // */
+    BlUE
+    std::cout << "###### set ######\n";
+    BlUE std::cout << "-------Constructor-------\n";
+    YELLOW
+    {
+        ft::set<int> first;                           // empty set of ints
+
+        int myints[]= {10,20,30,40,50};
+        ft::set<int> second (myints,myints+5);        // range
+
+        ft::set<int> third (second);                  // a copy of second
+
+        ft::set<int> fourth (second.begin(), second.end());  // iterator ctor.
+
+        ft::set<int,classcomp> fifth;                 // class as Compare
+
+        bool(*fn_pt)(int,int) = fncomp;
+        ft::set<int,bool(*)(int,int)> sixth (fn_pt);  // function pointer as Compare
+    }
+    
+    YELLOW
 
     std::cout << ansi::reset;
     return 0;

@@ -26,9 +26,4 @@ template <class InputIterator1, class InputIterator2>
 }
 }
 
-
-
-
-
-
 #endif
