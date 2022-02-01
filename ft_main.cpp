@@ -433,7 +433,7 @@ int main()
 
     BlUE
     std::cout << "###### map ######\n";
-    /*
+    // /*
     std::cout << "-------ft:pair-------\n";
     GREEN
     {
@@ -459,9 +459,11 @@ int main()
         std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
         std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
     }
-    */
+    // */
+
+
 //    /*
-    std::cout << "-------Constructor-------\n";
+    BlUE std::cout << "-------Constructor-------\n";
     GREEN
     std::map<char,int> first;
     std::cout << "empty std::map :" << std::endl; ft_cout_map(first);
@@ -488,7 +490,7 @@ int main()
     bool(*fn_pt_ft)(char, char) = fncomp;
     ft::map<char, int, bool(*)(char,char) > fifthf (fn_pt_ft); // function pointer as Compare
 
-    std::cout << "-------Iterators-------\n";
+    BlUE std::cout << "-------Iterators-------\n";
     GREEN
     std::cout << "std::map  revers :" << std::endl;
     for (std::map<char,int>::reverse_iterator it = first.rbegin(); it != first.rend(); it++)
@@ -499,7 +501,219 @@ int main()
     for (ft::map<char,int>::reverse_iterator it = first_ft.rbegin(); it != first_ft.rend(); it++)
         std::cout << "  [key]= " << it->first << " [value]= " << it->second << std::endl; 
 
-    std::cout << "-------Capacity-------\n";
+    BlUE std::cout << "-------Capacity-------\n";
+
+    GREEN
+    std::cout << "std::map  first.empty() :" <<  first.empty() << std::endl;
+    std::cout << "std::map  first.size() :" <<  first.size() << std::endl;
+    std::cout << "std::map  first.max_size() :" <<  first.max_size() << std::endl;
+
+    YELLOW
+    std::cout << "ft::map  first_ft.empty() :" <<  first_ft.empty() << std::endl;
+    std::cout << "ft::map  first_ft.size() :" <<  first_ft.size() << std::endl;
+    std::cout << "ft::map  first_ft.max_size() :" <<  first_ft.max_size() << std::endl;
+
+    BlUE std::cout << "-------Element access-------\n";
+
+    std::cout << "it has already been !!!" << std::endl;
+
+    BlUE std::cout << "-------Modifiers-------\n";
+
+    GREEN
+    std::cout << "std::map  first.erase() :" << std::endl;
+    first.erase('a'); ft_cout_map(first);
+    std::cout << "std::map  first.insert() :" << std::endl;
+    first.insert( std::pair<char,int>('a',200) ); ft_cout_map(first);
+
+    YELLOW
+    std::cout << "ft::map  first_ft.erase() :" << std::endl;
+    first_ft.erase('a'); ft_cout_map(first_ft);
+    std::cout << "ft::map  first_ft.insert() :" << std::endl;
+    first_ft.insert( ft::pair<char,int>('a',200) ); ft_cout_map(first_ft);
+
+    BlUE std::cout << "Test SWAP :" << std::endl;
+    GREEN
+    {
+        std::map<char,int> foo,bar;
+        foo['x']=100;
+        foo['y']=200;
+        bar['a']=11;
+        bar['b']=22;
+        bar['c']=33;
+        foo.swap(bar);
+        std::cout << "foo contains:\n";
+        for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+        std::cout << "bar contains:\n";
+        for (std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+        std::cout << it->first << " => " << it->second << '\n';
+    }
+    YELLOW
+    {
+        ft::map<char,int> foo,bar;
+        foo['x']=100;
+        foo['y']=200;
+        bar['a']=11;
+        bar['b']=22;
+        bar['c']=33;
+        foo.swap(bar);
+        std::cout << "foo contains:\n";
+        for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+        std::cout << "bar contains:\n";
+        for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+        std::cout << it->first << " => " << it->second << '\n';
+    }
+
+    GREEN
+    std::cout << "std::map  first.clear() :" << std::endl;
+    first.clear();
+    std::cout << "std::map  first.size() :" <<  first.size() << std::endl;
+
+    YELLOW
+    std::cout << "ft::map  first_ft.clear() :" << std::endl;
+    first_ft.clear();
+    std::cout << "ft::map  first_ft.size() :" <<  first_ft.size() << std::endl;
+
+    BlUE std::cout << "-------Observers-------\n";
+
+    std::cout << "Test key_compare :" << std::endl;
+    GREEN
+    {
+        std::map<char,int> mymap;
+        std::map<char,int>::key_compare mycomp = mymap.key_comp();
+        mymap['a']=100;
+        mymap['b']=200;
+        mymap['c']=300;
+        std::cout << "mymap contains:\n";
+        char highest = mymap.rbegin()->first;     // key value of last element
+        std::map<char,int>::iterator it = mymap.begin();
+        do {
+            std::cout << it->first << " => " << it->second << '\n';
+        } while ( mycomp((*it++).first, highest) );
+        std::cout << '\n';
+    }
+    YELLOW
+    {
+        ft::map<char,int> mymap;
+        ft::map<char,int>::key_compare mycomp = mymap.key_comp();
+        mymap['a']=100;
+        mymap['b']=200;
+        mymap['c']=300;
+        std::cout << "mymap contains:\n";
+        char highest = mymap.rbegin()->first;     // key value of last element
+        ft::map<char,int>::iterator it = mymap.begin();
+        do {
+            std::cout << it->first << " => " << it->second << '\n';
+        } while ( mycomp((*it++).first, highest) );
+        std::cout << '\n';
+    }
+
+    BlUE std::cout << "Test value_comp :" << std::endl;
+    GREEN
+    {
+        std::map<char,int> mymap;
+        mymap['x']=1001;
+        mymap['y']=2002;
+        mymap['z']=3003;
+        std::cout << "mymap contains:\n";
+        std::pair<char,int> highest = *mymap.rbegin();          // last element
+        std::map<char,int>::iterator it = mymap.begin();
+        do {
+            std::cout << it->first << " => " << it->second << '\n';
+        } while ( mymap.value_comp()(*it++, highest) );
+    }
+    YELLOW
+    {
+        ft::map<char,int> mymap;
+        mymap['x']=1001;
+        mymap['y']=2002;
+        mymap['z']=3003;
+        std::cout << "mymap contains:\n";
+        ft::pair<char,int> highest = *mymap.rbegin();          // last element
+        ft::map<char,int>::iterator it = mymap.begin();
+        do {
+            std::cout << it->first << " => " << it->second << '\n';
+        } while ( mymap.value_comp()(*it++, highest) );
+    }
+
+    BlUE std::cout << "-------Operations-------\n";
+    first['a'] = 10;
+    first['b'] = 20;
+    first_ft['a'] = 10;
+    first_ft['b'] = 20;
+
+    GREEN
+    std::cout << "std::map  first.find() :" << std::endl;
+    std::cout << "a => " << first.find('a')->second << '\n';
+    std::cout << "std::map  first.count() :  " << first.count('a') << '\n';
+
+    YELLOW
+    std::cout << "ft::map  first_ft.find() :" << std::endl;
+    std::cout << "a => " << first_ft.find('a')->second << '\n';
+    std::cout << "ft::map  first_ft.count() :  " << first_ft.count('a') << '\n';
+
+    BlUE std::cout << "Test lower_bound and upper_bound: " << std::endl;
+    GREEN
+    {
+        std::map<char,int> mymap;
+        std::map<char,int>::iterator itlow,itup;
+        mymap['a']=20;
+        mymap['b']=40;
+        mymap['c']=60;
+        mymap['d']=80;
+        mymap['e']=100;
+        itlow=mymap.lower_bound ('b');  // itlow points to b
+        itup=mymap.upper_bound ('d');   // itup points to e (not d!)
+        mymap.erase(itlow,itup);        // erases [itlow,itup)
+        // print content:
+        for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+    }
+    YELLOW
+    {
+        ft::map<char,int> mymap;
+        ft::map<char,int>::iterator itlow,itup;
+        mymap['a']=20;
+        mymap['b']=40;
+        mymap['c']=60;
+        mymap['d']=80;
+        mymap['e']=100;
+        itlow=mymap.lower_bound ('b');  // itlow points to b
+        itup=mymap.upper_bound ('d');   // itup points to e (not d!)
+        mymap.erase(itlow,itup);        // erases [itlow,itup)
+        // print content:
+        for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+            std::cout << it->first << " => " << it->second << '\n';
+    }
+
+    BlUE std::cout << "Test equal_range: " << std::endl;
+    GREEN
+    {
+        std::map<char,int> mymap;
+        mymap['a']=10;
+        mymap['b']=20;
+        mymap['c']=30;
+        std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> ret;
+        ret = mymap.equal_range('b');
+        std::cout << "lower bound points to: ";
+        std::cout << ret.first->first << " => " << ret.first->second << '\n';
+        std::cout << "upper bound points to: ";
+        std::cout << ret.second->first << " => " << ret.second->second << '\n';
+    }
+    YELLOW
+    {
+        ft::map<char,int> mymap;
+        mymap['a']=10;
+        mymap['b']=20;
+        mymap['c']=30;
+        ft::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
+        ret = mymap.equal_range('b');
+        std::cout << "lower bound points to: ";
+        std::cout << ret.first->first << " => " << ret.first->second << '\n';
+        std::cout << "upper bound points to: ";
+        std::cout << ret.second->first << " => " << ret.second->second << '\n';
+    }
 
     // */
 
