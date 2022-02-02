@@ -1,10 +1,11 @@
 # ft_containers
-Реализация std::vector, std::map, std::stack C++98
+Реализация контейнеров std::vector, std::map, std::stack, std::set C++98
 
 ## Актуальный Статус: 
 * ft::vector: Закончен.
 * ft::stack: Закончен.
 * ft::map: Закончен.
+* ft::set: Закончен.
 
 ## Как запустить:
 * make - запустит ft_main.cpp со сравнительными тестами ft и std контейнера

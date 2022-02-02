@@ -719,26 +719,103 @@ int main()
 
     BlUE
     std::cout << "###### set ######\n";
+
+/*
+
     BlUE std::cout << "-------Constructor-------\n";
     YELLOW
     {
         ft::set<int> first;                           // empty set of ints
-
         int myints[]= {10,20,30,40,50};
         ft::set<int> second (myints,myints+5);        // range
-
         ft::set<int> third (second);                  // a copy of second
-
         ft::set<int> fourth (second.begin(), second.end());  // iterator ctor.
-
         ft::set<int,classcomp> fifth;                 // class as Compare
-
         bool(*fn_pt)(int,int) = fncomp;
         ft::set<int,bool(*)(int,int)> sixth (fn_pt);  // function pointer as Compare
     }
-    
+    {
+        std::cout << "____operator =___\n";
+        int myints[]={ 12,82,37,64,15 };
+        ft::set<int> first (myints,myints+5);   // set with 5 ints
+        ft::set<int> second;                    // empty set
+        second = first;                          // now second contains the 5 ints
+        first = ft::set<int>();                 // and first is empty
+        std::cout << "Size of first: " << int (first.size()) << '\n';
+        std::cout << "Size of second: " << int (second.size()) << '\n';
+    }
+    BlUE std::cout << "-------Iterators-------\n";
     YELLOW
+    {
+        int myints[] = {75,23,65,42,13};
+        ft::set<int> myset (myints,myints+5);
+        std::cout << "myset contains:";
+        for (ft::set<int>::iterator it=myset.begin(); it!=myset.end(); ++it)
+            std::cout << ' ' << *it;
+        std::cout << '\n';
+    }
+    {
+        std::cout << "____rend - rbegin___\n";
+        int myints[] = {21,64,17,78,49};
+        ft::set<int> myset (myints,myints+5);
+        ft::set<int>::reverse_iterator rit;
+        std::cout << "myset contains:";
+        for (rit = myset.rbegin(); rit != myset.rend(); ++rit)
+            std::cout << ' ' << *rit;
+        std::cout << '\n';
 
+    }
+    BlUE std::cout << "-------Capacity-------\n";
+    YELLOW
+    {
+        ft::set<int> myset;
+        myset.insert(20);
+        myset.insert(30);
+        myset.insert(10);
+        std::cout << "myset epmty(): " << myset.empty() << std::endl;
+        std::cout << "myset size(): " << myset.size() << std::endl;
+        std::cout << "myset max_size(): " << myset.max_size() << std::endl;
+        while (!myset.empty())
+        {
+            std::cout << ' ' << *myset.begin();
+            myset.erase(myset.begin());
+        }
+    }
+    BlUE std::cout << "-------swap and clear-------\n";
+    YELLOW
+    {
+        int myints[]={12,75,10,32,20,25};
+        ft::set<int> first (myints,myints+3);     // 10,12,75
+        ft::set<int> second (myints+3,myints+6);  // 20,25,32
+        first.swap(second);
+        std::cout << "first contains:";
+        for (ft::set<int>::iterator it=first.begin(); it!=first.end(); ++it)
+            std::cout << ' ' << *it;
+        std::cout << '\n';
+        std::cout << "second contains:";
+        for (ft::set<int>::iterator it=second.begin(); it!=second.end(); ++it)
+            std::cout << ' ' << *it;
+        std::cout << '\n';
+    }
+    {
+        ft::set<int> myset;
+        myset.insert (100);
+        myset.insert (200);
+        myset.insert (300);
+        std::cout << "myset contains:";
+        for (ft::set<int>::iterator it=myset.begin(); it!=myset.end(); ++it)
+            std::cout << ' ' << *it;
+        std::cout << '\n';
+        myset.clear();
+        myset.insert (1101);
+        myset.insert (2202);
+        std::cout << "myset contains:";
+        for (ft::set<int>::iterator it=myset.begin(); it!=myset.end(); ++it)
+            std::cout << ' ' << *it;
+        std::cout << '\n';
+    }
+*/
+    
     std::cout << ansi::reset;
     return 0;
 }
