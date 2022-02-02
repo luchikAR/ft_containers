@@ -70,7 +70,7 @@ int main()
     BlUE
     std::cout << "###### Vector ######\n";
 
-    /*
+    // /*
     {
     std::cout << "-------Constructor-------\n";
     std::vector<int> sv_int1;
@@ -84,6 +84,7 @@ int main()
     std::allocator<int>::pointer v1PtrA = v1Alloc.address( *find( v1.begin( ), v1.end( ), 6 ) );
     std::allocator<int>::pointer v2PtrA = v1Alloc.address( *find( v1.begin( ), v1.end( ), 15 ) );
     std::vector<int> sv_int4(v1PtrA, v2PtrA);
+    std::vector<int> sv_int55 = sv_int4;
 
     ft::vector<int> v_int1;
     ft::vector<int> v_int2(4);
@@ -95,6 +96,7 @@ int main()
     std::cout << "std:: v(4): " << sv_int2[0] << std::endl;
     std::cout << "std:: v(4,5): size = " << sv_int3.size() << " "; ft_cout_vector(sv_int3);
     std::cout << "std:: v(Prt,Ptr): size = " << sv_int4.size() << " "; ft_cout_vector(sv_int4);
+    std::cout << "std:: v()=v(): size = " << sv_int55.size() << " "; ft_cout_vector(sv_int55);
     YELLOW
     std::cout << "ft:: v(4): " << v_int2[0] << std::endl;
     std::cout << "ft:: v(4,5): size = " << v_int3.size() << " "; ft_cout_vector(v_int3);
@@ -349,11 +351,11 @@ int main()
         if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
     }
     }
-    */
+    // */
     
     BlUE
     std::cout << "###### Stack ######\n";
-    /*
+    // /*
     {
         std::cout << "-------Constructor-------\n";
         std::deque<int> mydeque (3,100);          // deque with 3 elements
@@ -432,12 +434,12 @@ int main()
             if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
         }
     }
-    */
+    // */
 
     BlUE
     std::cout << "###### map ######\n";
 
-    /*
+    // /*
     std::cout << "-------ft:pair-------\n";
     GREEN
     {
@@ -715,12 +717,12 @@ int main()
         std::cout << "upper bound points to: ";
         std::cout << ret.second->first << " => " << ret.second->second << '\n';
     }
-    */
+    // */
 
     BlUE
     std::cout << "###### set ######\n";
 
-/*
+// /*
 
     BlUE std::cout << "-------Constructor-------\n";
     YELLOW
@@ -814,7 +816,9 @@ int main()
             std::cout << ' ' << *it;
         std::cout << '\n';
     }
-*/
+// */
+
+// while(1) {}
     
     std::cout << ansi::reset;
     return 0;

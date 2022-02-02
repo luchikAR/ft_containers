@@ -7,9 +7,11 @@
 #include <iterator>
 #include <algorithm>
 
+#include "IteratorTraits.hpp"
+
 namespace ft {
 template<typename T>
-class VectorIterator: std::iterator_traits<T*>  // сделать ft:: 
+class VectorIterator: ft::iterator_traits<T*>  // сделать ft:: 
 {
 	//-----------------------Typedef-----------------------//
 public:
