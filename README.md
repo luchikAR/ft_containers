@@ -6,8 +6,7 @@
 **[List](https://codelessons.ru/cplusplus/spisok-list-v-s-polnyj-material.html)**  
 **[Vector](https://codelessons.ru/cplusplus/vektory-v-c-dlya-nachinayushhix.html)**  
 **[Map](https://codelessons.ru/cplusplus/map-v-c-chto-eto-i-kak-s-etim-rabotat.html)**  
-**[Stack](https://codelessons.ru/cplusplus/realizaciya-steka-stack-v-c.html)**  
-**[Queue](https://codelessons.ru/cplusplus/ochered-queue-v-c-realizaciya-i-chto-eto-voobshhe-takoe.html)**  
+**[Stack](https://codelessons.ru/cplusplus/realizaciya-steka-stack-v-c.html)**
 
 ## Как запустить:
 ```
@@ -23,6 +22,6 @@
 ---------
 * std::allocator
 * std::iterator
-* 
+
 **Author:**  
 :copyright:*[Andrey Belenov](https://github.com/luchikAR)*  
